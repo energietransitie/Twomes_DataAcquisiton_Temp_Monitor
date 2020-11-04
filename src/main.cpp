@@ -1,33 +1,16 @@
-/*********
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp-now-many-to-one-esp32/
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-*********/
-
 #include <esp_now.h>
 #include <WiFi.h>
 
-// REPLACE WITH THE RECEIVER'S MAC Address
-uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //REVIEW, this is a broadcast address
 
-// Structure example to send data
-// Must match the receiver structure
 typedef struct struct_message
 {
-  //byte id; // must be unique for each sender board
-  int x;
-  int y;
+  int temperature1;
+  int temperature2;
 } struct_message;
 
-//Create a struct_message called myData
 struct_message myData;
 
-// callback when data is sent
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
   Serial.print("\r\nLast Packet Send Status:\t");
@@ -47,25 +30,16 @@ void setup()
     delay(100);
   }
 
-  // Init Serial Monitor
   Serial.begin(115200);
   Serial.println("active");
 
-  // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
-  WiFi.getTxPower();
-  WiFi.setTxPower(1);
 
-  // Init ESP-NOW
   if (esp_now_init() != ESP_OK)
   {
     Serial.println("Error initializing ESP-NOW");
     return;
   }
-
-  // Once ESPNow is successfully Init, we will register for Send CB to
-  // get the status of Trasnmitted packet
-  //esp_now_register_send_cb(OnDataSent);
 
   // Register peer
   esp_now_peer_info_t peerInfo;
@@ -79,8 +53,6 @@ void setup()
     Serial.println("Failed to add peer");
     return;
   }
-  Serial.print("sizeof(myData) = ");
-  Serial.println(sizeof(myData));
 }
 
 void loop()
@@ -89,32 +61,26 @@ void loop()
 #define maximumValueSendTest 32000
 #define minimumValueSendTest 1
   //myData.id = 1;
-  if (myData.x < maximumValueSendTest)
+  if (myData.temperature1 < maximumValueSendTest)
   {
-    myData.x++;
+    myData.temperature1++;
   }
   else
   {
-    myData.x = minimumValueSendTest;
+    myData.temperature1 = minimumValueSendTest;
   }
-  if (myData.y > minimumValueSendTest)
+  if (myData.temperature2 > minimumValueSendTest)
   {
-    myData.y--;
+    myData.temperature2--;
   }
   else
   {
-    myData.y = maximumValueSendTest;
+    myData.temperature2 = maximumValueSendTest;
   }
 
-  // Send message via ESP-NOW
-  // long startTime = millis();
-  digitalWrite(timeMeasurePin, HIGH);
+  digitalWrite(timeMeasurePin, HIGH); //for time logging with scope
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&myData, sizeof(myData));
-  digitalWrite(timeMeasurePin, LOW);
-  // long endTime = millis();
-
-  // Serial.print("Time used for send operation: ");
-  //Serial.println(endTime - startTime);
+  digitalWrite(timeMeasurePin, LOW); //for time logging with scope
 
   if (result == ESP_OK)
   {
