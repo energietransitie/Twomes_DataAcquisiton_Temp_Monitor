@@ -1,5 +1,6 @@
 #include <esp_now.h>
 #include <WiFi.h>
+#include <Arduino.h>
 
 uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //REVIEW, this is a broadcast address
 
@@ -22,13 +23,6 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 void setup()
 {
   pinMode(timeMeasurePin, OUTPUT);
-  boolean state = true;
-  for (byte testSync = 0; testSync < 254; testSync++)
-  {
-    digitalWrite(timeMeasurePin, state);
-    state = !state;
-    delay(100);
-  }
 
   Serial.begin(115200);
   Serial.println("active");
@@ -41,10 +35,12 @@ void setup()
     return;
   }
 
+  //esp_now_register_send_cb(OnDataSent);
+
   // Register peer
   esp_now_peer_info_t peerInfo;
   memcpy(peerInfo.peer_addr, broadcastAddress, 6);
-  peerInfo.channel = 0;
+  peerInfo.channel = 6;
   peerInfo.encrypt = false;
 
   // Add peer
@@ -61,6 +57,7 @@ void loop()
 #define maximumValueSendTest 32000
 #define minimumValueSendTest 1
   //myData.id = 1;
+  //Serial.println("start");
   if (myData.temperature1 < maximumValueSendTest)
   {
     myData.temperature1++;
