@@ -1,0 +1,111 @@
+Removed Pin From Net: NetName=GND Pin=J?_TS1-4
+Removed Pin From Net: NetName=GND Pin=J?_TS2-4
+Removed Pin From Net: NetName=GND Pin=Q1_TS1-2
+Removed Pin From Net: NetName=GND Pin=Q1_TS2-2
+Removed Member From Class: ClassName=TS1 Member=Q1_TS1
+Removed Member From Class: ClassName=TS2 Member=Q1_TS2
+Change Component Designator: OldDesignator=J?_TS1 NewDesignator=J2_TS1
+Change Component Designator: OldDesignator=J?_TS2 NewDesignator=J2_TS2
+Change Component Designator: OldDesignator=Q? NewDesignator=Q1
+Change Component Designator: OldDesignator=R? NewDesignator=R9
+Change Component Designator: OldDesignator=R?_TS1 NewDesignator=R11_TS1
+Change Component Designator: OldDesignator=R?_TS2 NewDesignator=R11_TS2
+Added Component: Designator=Q2_TS1(SOT23)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "Room_Node"
+Added Component: Designator=Q2_TS2(SOT23)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "Room_Node"
+Added Component: Designator=R8(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "Boiler_Node"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "Boiler_Node"
+Added Component: Designator=R12_TS1(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "Room_Node"
+Added Component: Designator=R12_TS2(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Resistance"; Value = "10"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "Room_Node"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "Room_Node"
+Added Pin To Net: NetName=GND Pin=Q2_TS1-2
+Added Pin To Net: NetName=GND Pin=Q2_TS2-2
+Added Pin To Net: NetName=GND Pin=R8-1
+Added Pin To Net: NetName=GND Pin=R12_TS1-1
+Added Pin To Net: NetName=GND Pin=R12_TS2-1
+Change Net Name : Old Net Name=NetQ?_1 New Net Name=NetQ1_1
+Change Net Name : Old Net Name=NetR?_TS1_1 New Net Name=NetR11_TS1_1
+Added Pin To Net: NetName=NetJ2_TS1_3 Pin=J2_TS1-3
+Added Pin To Net: NetName=NetJ2_TS1_3 Pin=J2_TS1-4
+Added Pin To Net: NetName=NetJ2_TS1_3 Pin=Q2_TS1-3
+Added Pin To Net: NetName=NetJ2_TS1_3 Pin=R12_TS1-2
+Added Net: Name=NetJ2_TS1_3
+Added Pin To Net: NetName=NetJ2_TS2_3 Pin=J2_TS2-3
+Added Pin To Net: NetName=NetJ2_TS2_3 Pin=J2_TS2-4
+Added Pin To Net: NetName=NetJ2_TS2_3 Pin=Q2_TS2-3
+Added Pin To Net: NetName=NetJ2_TS2_3 Pin=R12_TS2-2
+Added Net: Name=NetJ2_TS2_3
+Added Pin To Net: NetName=NetQ1_3 Pin=Q1-3
+Added Pin To Net: NetName=NetQ1_3 Pin=R8-2
+Added Pin To Net: NetName=NetQ1_3 Pin=U2-2
+Added Net: Name=NetQ1_3
+Added Pin To Net: NetName=NetQ2_TS1_1 Pin=Q2_TS1-1
+Added Pin To Net: NetName=NetQ2_TS1_1 Pin=R11_TS1-2
+Added Net: Name=NetQ2_TS1_1
+Added Pin To Net: NetName=NetQ2_TS2_1 Pin=Q2_TS2-1
+Added Pin To Net: NetName=NetQ2_TS2_1 Pin=R11_TS2-2
+Added Net: Name=NetQ2_TS2_1
+Added Pin To Net: NetName=NetR10_TS1_1 Pin=U1-26
+Added Net: Name=NetR10_TS1_1
+Added Pin To Net: NetName=NetR10_TS2_1 Pin=U1-16
+Added Net: Name=NetR10_TS2_1
+Added Pin To Net: NetName=NetR11_TS2_1 Pin=R11_TS2-1
+Added Pin To Net: NetName=NetR11_TS2_1 Pin=U1-13
+Added Net: Name=NetR11_TS2_1
+Added Member To Class: ClassName=TS1 Member=Component Q2_TS1 (Q2) #NAME?
+Added Member To Class: ClassName=TS2 Member=Component Q2_TS2 (Q2) #NAME?
+Added Member To Class: ClassName=main_master Member=Component R8 10
+Added Member To Class: ClassName=TS1 Member=Component R12_TS1 (R12) 10
+Added Member To Class: ClassName=TS2 Member=Component R12_TS2 (R12) 10

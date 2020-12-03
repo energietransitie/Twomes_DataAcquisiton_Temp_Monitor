@@ -1,0 +1,33 @@
+Removed Pin From Net: NetName=Vbat Pin=C1-1
+Removed Member From Class: ClassName=main_master Member=C1
+Change Component Comment : Designator=D1 Old Comment=red led New Comment=Green
+Change Component Comment : Designator=D2 Old Comment=red led New Comment=Red
+Change component parameters: Designator = "D1"; Footprint = "Kingbright_KPT-2012EC_0"; UniqueID = "\JUDYGVWT"
+Change component parameters. Clean all parameters for all variants
+Change component parameters (AddParameter): Name = "Case/Package"; Value = "0805"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Category"; Value = "LEDs"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Color"; Value = "Green"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Forward Current"; Value = "20mA"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Forward Voltage"; Value = "2.1V"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer"; Value = "Kingbright"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer Part Number"; Value = "AP2012MGC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier 1"; Value = "Mouser"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Supplier Part Number 1"; Value = "604-AP2012MGC"; VariantName = "[No Variations]"
+Added Component: Designator=MP5_TS1(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP5_TS2(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP6_TS1(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP6_TS2(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Pin To Net: NetName=Data_TempSensor_TS1 Pin=MP5_TS1-1
+Added Pin To Net: NetName=Data_TempSensor_TS2 Pin=MP5_TS2-1
+Added Pin To Net: NetName=NetJ2_TS1_3 Pin=MP6_TS1-1
+Added Pin To Net: NetName=NetJ2_TS2_3 Pin=MP6_TS2-1
+Change Net Name : Old Net Name=NetQ1_1 New Net Name=EN_si_R
+Added Member To Class: ClassName=TS1 Member=Component MP5_TS1 (MP5) Measure_point
+Added Member To Class: ClassName=TS2 Member=Component MP5_TS2 (MP5) Measure_point
+Added Member To Class: ClassName=TS1 Member=Component MP6_TS1 (MP6) Measure_point
+Added Member To Class: ClassName=TS2 Member=Component MP6_TS2 (MP6) Measure_point
+Added Room: Name=TS2

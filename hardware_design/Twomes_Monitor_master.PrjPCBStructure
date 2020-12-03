@@ -1,0 +1,3 @@
+Record=TopLevelDocument|FileName=main_master.SchDoc
+Record=SheetSymbol|SourceDocument=main_master.SchDoc|Designator=TS1|SchDesignator=TS1|FileName=tempSensor_master.SchDoc|SymbolType=Normal|RawFileName=tempSensor_master.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=main_master.SchDoc|Designator=TS2|SchDesignator=TS2|FileName=tempSensor_master.SchDoc|SymbolType=Normal|RawFileName=tempSensor_master.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 

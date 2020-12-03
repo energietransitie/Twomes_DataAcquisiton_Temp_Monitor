@@ -1,0 +1,4 @@
+Removed Pin From Net: NetName=I2C_SCL Pin=MP7-1
+Removed Pin From Net: NetName=I2C_SDA Pin=MP8-1
+Removed Member From Class: ClassName=main_master Member=MP7
+Removed Member From Class: ClassName=main_master Member=MP8

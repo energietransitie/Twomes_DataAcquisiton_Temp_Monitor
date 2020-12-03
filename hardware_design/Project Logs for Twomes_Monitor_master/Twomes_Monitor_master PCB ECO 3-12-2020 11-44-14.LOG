@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=NetMP4_1 Pin=R2-2
+Removed Member From Class: ClassName=main_master Member=R2
+Added Component: Designator=R?(R1206_Simple-Assemble_shorted)
+Add component. Clean all parameters for all variants
+Added Pin To Net: NetName=NetMP4_1 Pin=R?-2
+Change Net Name : Old Net Name=NetMP4_1 New Net Name=Measure_GND
+Added Pin To Net: NetName=Bat_GND Pin=BT1-2
+Added Pin To Net: NetName=Bat_GND Pin=MP2-1
+Added Pin To Net: NetName=Bat_GND Pin=R?-1
+Added Net: Name=Bat_GND
+Added Member To Class: ClassName=main_master Member=Component R? !0R!
