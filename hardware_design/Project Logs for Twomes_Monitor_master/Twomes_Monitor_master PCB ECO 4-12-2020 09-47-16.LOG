@@ -1,0 +1,3 @@
+Change Component Library : Designator=R12_TS1 Old Library=Resistors.IntLib New Library=Resistors.SchLib
+Change Component Library : Designator=R12_TS2 Old Library=Resistors.IntLib New Library=Resistors.SchLib
+Added Member To Class: ClassName=main_master Member=Component LP? VLP-350-R
