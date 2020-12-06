@@ -72,23 +72,6 @@ GenerateClassCluster=0
 DocumentUniqueId=PPUKFMNK
 
 [Document3]
-DocumentPath=Twomes_Monitor.IntLib
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=
-
-[Document4]
 DocumentPath=tempSensor_master.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -105,18 +88,36 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=MROAGFSE
 
+[Document4]
+DocumentPath=Twomes_Monitor_master.IntLib
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
 [ProjectVariant1]
 UniqueID=C6652998-D3ED-4092-999F-B81A37C19D0A
 Description=Boiler_Node
 AllowFabrication=1
 ParameterCount=0
-VariationCount=6
+VariationCount=7
 Variation1=Designator=U2|UniqueId=\FBXWSVHY|Kind=1|AlternatePart= 
 Variation2=Designator=C3|UniqueId=\FCEFBNMQ|Kind=1|AlternatePart= 
 Variation3=Designator=C2|UniqueId=\LTBBCEQW|Kind=1|AlternatePart= 
 Variation4=Designator=R9|UniqueId=\GYEMVVUP|Kind=1|AlternatePart= 
 Variation5=Designator=Q1|UniqueId=\LAPRJSUG|Kind=1|AlternatePart= 
 Variation6=Designator=R8|UniqueId=\JIWCYJDD|Kind=1|AlternatePart= 
+Variation7=Designator=R8|UniqueId=\HXGHQVAW|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
 [ProjectVariant2]
@@ -124,7 +125,7 @@ UniqueID=3FD33596-0C6F-4763-89CE-EDE5C4BD8EB6
 Description=Room_Node
 AllowFabrication=0
 ParameterCount=0
-VariationCount=10
+VariationCount=12
 Variation1=Designator=J2_TS1|UniqueId=\PNFYCQHW\EKCNVIVQ|Kind=1|AlternatePart= 
 Variation2=Designator=R10_TS2|UniqueId=\QXJDQSJQ\HHMHHLRM|Kind=1|AlternatePart= 
 Variation3=Designator=R11_TS1|UniqueId=\PNFYCQHW\LFPJRVIY|Kind=1|AlternatePart= 
@@ -135,7 +136,13 @@ Variation7=Designator=R12_TS1|UniqueId=\PNFYCQHW\JTFPXXSC|Kind=1|AlternatePart=
 Variation8=Designator=R12_TS2|UniqueId=\QXJDQSJQ\JTFPXXSC|Kind=1|AlternatePart= 
 Variation9=Designator=Q2_TS2|UniqueId=\QXJDQSJQ\LWQPQPEK|Kind=1|AlternatePart= 
 Variation10=Designator=J2_TS2|UniqueId=\QXJDQSJQ\EKCNVIVQ|Kind=1|AlternatePart= 
+Variation11=Designator=R12_TS1|UniqueId=\PNFYCQHW\SQHMPJVD|Kind=1|AlternatePart= 
+Variation12=Designator=R12_TS2|UniqueId=\QXJDQSJQ\SQHMPJVD|Kind=1|AlternatePart= 
 ParamVariationCount=0
+
+[GeneratedDocument1]
+DocumentPath=Project Outputs for Twomes_Monitor_master\Design Rule Check - Twomes_Monitor_master.html
+DItemRevisionGUID=
 
 [Configuration1]
 Name=Sources
