@@ -1,0 +1,10 @@
+Added Component: Designator=LP?(VLP-350-R)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "BIVAR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "VLP-350-R"; VariantName = "[No Variations]"
+Added Component: Designator=LP?(VLP-350-R)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "BIVAR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "VLP-350-R"; VariantName = "[No Variations]"
+Added Member To Class: ClassName=main_master Member=Component LP? VLP-350-R
+Added Member To Class: ClassName=main_master Member=Component LP? VLP-350-R

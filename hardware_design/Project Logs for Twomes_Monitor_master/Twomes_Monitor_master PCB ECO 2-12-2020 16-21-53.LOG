@@ -1,0 +1,273 @@
+Removed Pin From Net: NetName=Vbat Pin=BT?-2
+Removed Member From Class: ClassName=main Member=BT?
+Removed Member From Class: ClassName=main Member=C?
+Removed Member From Class: ClassName=main Member=S?
+Change Component Designator: OldDesignator=C? NewDesignator=C1
+Change Component Designator: OldDesignator=D? NewDesignator=D1
+Change Component Designator: OldDesignator=R? NewDesignator=R2
+Change Component Designator: OldDesignator=U? NewDesignator=U1
+Change Component Designator: OldDesignator=U? NewDesignator=U2
+Added Component: Designator=BT1(KEYSTONE_2410)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "KEYSTONE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Farnell_Order_Code"; Value = "1702629"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Farnell_Price"; Value = "1,80"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser_Order_Code"; Value = "534-2460"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser_Price"; Value = "1,10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "2460"; VariantName = "[No Variations]"
+Added Component: Designator=C2(C1206)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Capacitance"; Value = "1uF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=C3(C1206)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Capacitance"; Value = "100nF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=C4(C1206)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Capacitance"; Value = "1uF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=D2(Kingbright_KPT-2012EC_0)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "KINGBRIGHT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2099236"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,112"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "KPT-2012EC"; VariantName = "[No Variations]"
+Added Component: Designator=J1(61300311121)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "WURTH ELEKTRONIK"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "Manufacturer"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.we-online.de"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "Datasheet"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "https://katalog.we-online.de/em/datasheet/6130xx21821.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Gender"; Value = "Male"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mounting Technology"; Value = "THT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2356154"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Orientation"; Value = "Vertical"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pitch"; Value = "2.54 mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,06"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "61300311121"; VariantName = "[No Variations]"
+Added Component: Designator=J?_TS1(MOLEX_90814-0204)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "MOLEX"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "90814-0204"; VariantName = "[No Variations]"
+Added Component: Designator=J?_TS2(MOLEX_90814-0204)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "MOLEX"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "90814-0204"; VariantName = "[No Variations]"
+Added Component: Designator=MP1(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP2(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP3(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP4(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=Q1_TS1(SOT23)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "[No Variations]"
+Added Component: Designator=Q1_TS2(SOT23)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "[No Variations]"
+Added Component: Designator=Q?(SOT23)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Manufacturer"; Value = "ON Semiconductor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "NTR5103NT1G"; VariantName = "[No Variations]"
+Added Component: Designator=R6(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "TE CONNECTIVITY"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2861956"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "250mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,0139"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "10k"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "CRGCQ1206J10K"; VariantName = "[No Variations]"
+Added Component: Designator=R7(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "TE CONNECTIVITY"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2861956"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "250mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,0139"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "10k"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "CRGCQ1206J10K"; VariantName = "[No Variations]"
+Added Component: Designator=R?_TS1(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2446791"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "250mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,0298"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "1k2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "MCWR12X1201FTL"; VariantName = "[No Variations]"
+Added Component: Designator=R?_TS2(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2446791"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "250mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,0298"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "1k2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "MCWR12X1201FTL"; VariantName = "[No Variations]"
+Added Component: Designator=R?(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = "2446791"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = "250mW"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "0,0298"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "1k2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "MCWR12X1201FTL"; VariantName = "[No Variations]"
+Added Component: Designator=S1(FP-FSM2JSMAA-MFG)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Case/Package"; Value = "SMD/SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Category"; Value = "Pushbutton Switches"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Connector Type"; Value = "SMD/SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "FSM2JSMAA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Surface Mount"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Unit Price 1"; Value = "€0.13022"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Voltage Rating (DC)"; Value = "24V"; VariantName = "[No Variations]"
+Added Component: Designator=S2(FP-FSM2JSMAA-MFG)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Case/Package"; Value = "SMD/SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Category"; Value = "Pushbutton Switches"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Connector Type"; Value = "SMD/SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "FSM2JSMAA"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Surface Mount"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Unit Price 1"; Value = "€0.13022"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Voltage Rating (DC)"; Value = "24V"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=Vbat Pin=BT1-1
+Added Pin To Net: NetName=NetU?_1 Pin=C2-1
+Added Pin To Net: NetName=Vbat Pin=C2-2
+Added Pin To Net: NetName=NetU?_1 Pin=C3-1
+Added Pin To Net: NetName=Vbat Pin=C3-2
+Added Pin To Net: NetName=NetU?_1 Pin=C4-1
+Added Pin To Net: NetName=NetU?_1 Pin=J1-3
+Added Pin To Net: NetName=Vbat Pin=J?_TS1-1
+Added Pin To Net: NetName=NetU?_1 Pin=J?_TS1-4
+Added Pin To Net: NetName=Vbat Pin=J?_TS2-1
+Added Pin To Net: NetName=NetU?_1 Pin=J?_TS2-4
+Added Pin To Net: NetName=Vbat Pin=MP1-1
+Added Pin To Net: NetName=NetU?_1 Pin=MP3-1
+Added Pin To Net: NetName=NetU?_1 Pin=Q1_TS1-2
+Added Pin To Net: NetName=NetU?_1 Pin=Q1_TS2-2
+Added Pin To Net: NetName=NetU?_1 Pin=Q?-2
+Added Pin To Net: NetName=Vbat Pin=R6-2
+Added Pin To Net: NetName=Vbat Pin=R7-2
+Added Pin To Net: NetName=NetU?_1 Pin=S1-1
+Added Pin To Net: NetName=NetU?_1 Pin=S1-3
+Added Pin To Net: NetName=NetU?_1 Pin=S2-1
+Added Pin To Net: NetName=NetU?_1 Pin=S2-3
+Added Pin To Net: NetName=Vbat Pin=U1-2
+Added Pin To Net: NetName=I2C_SCL Pin=U1-36
+Added Pin To Net: NetName=I2C_SDA Pin=U1-37
+Added Pin To Net: NetName=Vbat Pin=U2-5
+Change Net Name : Old Net Name=NetU?_1 New Net Name=GND
+Added Pin To Net: NetName=Button_1 Pin=R7-1
+Added Pin To Net: NetName=Button_1 Pin=S2-2
+Added Pin To Net: NetName=Button_1 Pin=S2-4
+Added Net: Name=Button_1
+Added Pin To Net: NetName=Button_2 Pin=U1-28
+Added Net: Name=Button_2
+Added Pin To Net: NetName=Data_TempSensor_TS1 Pin=J?_TS1-2
+Added Pin To Net: NetName=Data_TempSensor_TS1 Pin=R?_TS1-2
+Added Net: Name=Data_TempSensor_TS1
+Added Pin To Net: NetName=Data_TempSensor_TS2 Pin=J?_TS2-2
+Added Pin To Net: NetName=Data_TempSensor_TS2 Pin=R?_TS2-2
+Added Net: Name=Data_TempSensor_TS2
+Added Pin To Net: NetName=EN_si Pin=R?-1
+Added Pin To Net: NetName=EN_si Pin=U1-33
+Added Net: Name=EN_si
+Added Pin To Net: NetName=LED1 Pin=D1-1
+Added Pin To Net: NetName=LED1 Pin=U1-30
+Added Net: Name=LED1
+Added Pin To Net: NetName=LED2 Pin=D2-1
+Added Pin To Net: NetName=LED2 Pin=U1-31
+Added Net: Name=LED2
+Added Pin To Net: NetName=NetBT1_2 Pin=BT1-2
+Added Pin To Net: NetName=NetBT1_2 Pin=MP2-1
+Added Pin To Net: NetName=NetBT1_2 Pin=R2-1
+Added Net: Name=NetBT1_2
+Added Pin To Net: NetName=NetC1_2 Pin=C1-2
+Added Net: Name=NetC1_2
+Added Pin To Net: NetName=NetD1_2 Pin=D1-2
+Added Net: Name=NetD1_2
+Added Pin To Net: NetName=NetD2_2 Pin=D2-2
+Added Net: Name=NetD2_2
+Added Pin To Net: NetName=NetJ1_1 Pin=J1-1
+Added Pin To Net: NetName=NetJ1_1 Pin=U1-34
+Added Net: Name=NetJ1_1
+Added Pin To Net: NetName=NetJ1_2 Pin=J1-2
+Added Pin To Net: NetName=NetJ1_2 Pin=U1-35
+Added Net: Name=NetJ1_2
+Added Pin To Net: NetName=NetJ?_TS1_3 Pin=J?_TS1-3
+Added Pin To Net: NetName=NetJ?_TS1_3 Pin=Q1_TS1-3
+Added Net: Name=NetJ?_TS1_3
+Added Pin To Net: NetName=NetJ?_TS2_3 Pin=J?_TS2-3
+Added Pin To Net: NetName=NetJ?_TS2_3 Pin=Q1_TS2-3
+Added Net: Name=NetJ?_TS2_3
+Added Pin To Net: NetName=NetMP4_1 Pin=MP4-1
+Added Pin To Net: NetName=NetMP4_1 Pin=R2-2
+Added Net: Name=NetMP4_1
+Added Pin To Net: NetName=NetQ1_TS1_1 Pin=Q1_TS1-1
+Added Pin To Net: NetName=NetQ1_TS1_1 Pin=R?_TS1-2
+Added Net: Name=NetQ1_TS1_1
+Added Pin To Net: NetName=NetQ1_TS2_1 Pin=Q1_TS2-1
+Added Pin To Net: NetName=NetQ1_TS2_1 Pin=R?_TS2-2
+Added Net: Name=NetQ1_TS2_1
+Added Pin To Net: NetName=NetQ?_1 Pin=Q?-1
+Added Pin To Net: NetName=NetQ?_1 Pin=R?-2
+Added Net: Name=NetQ?_1
+Added Pin To Net: NetName=NetQ?_3 Pin=Q?-3
+Added Pin To Net: NetName=NetQ?_3 Pin=U2-2
+Added Net: Name=NetQ?_3
+Added Pin To Net: NetName=NetR?_TS1_1 Pin=R?_TS1-1
+Added Pin To Net: NetName=NetR?_TS1_1 Pin=U1-29
+Added Net: Name=NetR?_TS1_1
+Added Pin To Net: NetName=NetR?_TS2_1 Pin=R?_TS2-1
+Added Pin To Net: NetName=NetR?_TS2_1 Pin=U1-16
+Added Net: Name=NetR?_TS2_1
+Added Pin To Net: NetName=RESET Pin=C4-2
+Added Pin To Net: NetName=RESET Pin=R6-1
+Added Pin To Net: NetName=RESET Pin=S1-2
+Added Pin To Net: NetName=RESET Pin=S1-4
+Added Pin To Net: NetName=RESET Pin=U1-3
+Added Net: Name=RESET
+Change Class Name : Old Net Name=main New Net Name=main_master
+Added Class: Name=TS1
+Added Class: Name=TS2
+Added Class: Name=tempSensor_master
+Added Member To Class: ClassName=main_master Member=Component BT1 2460
+Added Member To Class: ClassName=main_master Member=Component C1 1800uF, 10V, smd
+Added Member To Class: ClassName=main_master Member=Component C2 1uF
+Added Member To Class: ClassName=main_master Member=Component C3 100nF
+Added Member To Class: ClassName=main_master Member=Component C4 1uF
+Added Member To Class: ClassName=main_master Member=Component D2 red led
+Added Member To Class: ClassName=main_master Member=Component J1 61300311121
+Added Member To Class: ClassName=main_master Member=Component MP1 Measure_point
+Added Member To Class: ClassName=main_master Member=Component MP2 Measure_point
+Added Member To Class: ClassName=main_master Member=Component MP3 Measure_point
+Added Member To Class: ClassName=main_master Member=Component MP4 Measure_point
+Added Member To Class: ClassName=main_master Member=Component Q? NTR5103NT1G
+Added Member To Class: ClassName=main_master Member=Component R6 10k
+Added Member To Class: ClassName=main_master Member=Component R7 10k
+Added Member To Class: ClassName=main_master Member=Component R? 1k2
+Added Member To Class: ClassName=main_master Member=Component S1 FSM2JSMAA
+Added Member To Class: ClassName=main_master Member=Component S2 FSM2JSMAA
+Added Member To Class: ClassName=main_master Member=Component U2 SI7051-A20-IM
+Change Room Name: Old Name=main New Name=TS2
+Change Room Scope: Old Scope=InComponentClass('main') New Scope=InComponentClass('TS2')
+Added Room: Name=main_master
+Added Room: Name=TS1

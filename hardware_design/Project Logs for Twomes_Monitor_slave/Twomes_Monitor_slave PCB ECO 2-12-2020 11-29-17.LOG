@@ -1,0 +1,10 @@
+Added Component: Designator=U?(TO-92_Twomes)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MAXIM INTEGRATED PRODUCTS"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Farnell_Order_Code"; Value = "2515553"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Farnell_Price"; Value = "2,85"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser_Order_Code"; Value = "700-DS18B20+"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser_Price"; Value = "3,97"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DS18B20"; VariantName = "[No Variations]"
+Added Class: Name=main_slave
+Added Room: Name=main_slave

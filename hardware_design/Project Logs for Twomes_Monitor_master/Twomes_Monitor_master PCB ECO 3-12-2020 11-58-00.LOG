@@ -1,0 +1,14 @@
+Change Component Designator: OldDesignator=R? NewDesignator=R2
+Added Component: Designator=MP7(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP8(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Component: Designator=MP9(MeasurePoint_1.5mm)
+Add component. Clean all parameters for all variants
+Added Pin To Net: NetName=I2C_SCL Pin=MP7-1
+Added Pin To Net: NetName=I2C_SDA Pin=MP8-1
+Added Pin To Net: NetName=NetQ1_3 Pin=MP9-1
+Change Net Name : Old Net Name=NetQ1_3 New Net Name=NetMP9_1
+Added Member To Class: ClassName=main_master Member=Component MP7 Measure_point
+Added Member To Class: ClassName=main_master Member=Component MP8 Measure_point
+Added Member To Class: ClassName=main_master Member=Component MP9 Measure_point

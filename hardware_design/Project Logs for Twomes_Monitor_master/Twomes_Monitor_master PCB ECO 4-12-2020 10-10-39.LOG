@@ -1,0 +1,39 @@
+Removed Pin From Net: NetName=GND Pin=J1-3
+Removed Pin From Net: NetName=NetJ1_1 Pin=U1-34
+Removed Pin From Net: NetName=NetJ1_2 Pin=U1-35
+Change Component Footprint: Designator=J1 Old Footprint=61300311121 New Footprint=61300411821
+Change Component Comment : Designator=J1 Old Comment=61300311121 New Comment=61300411821
+Change Component Designator: OldDesignator=LP? NewDesignator=LP1
+Change Component Designator: OldDesignator=LP? NewDesignator=LP2
+Change component parameters: Designator = "J1"; Footprint = "61300411821"; UniqueID = "\TRAWSRSQ"
+Change component parameters. Clean all parameters for all variants
+Change component parameters (AddParameter): Name = "ComponentLink1Description"; Value = "Manufacturer"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.we-online.de"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink2Description"; Value = "Datasheet"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "ComponentLink2URL"; Value = "https://katalog.we-online.de/em/datasheet/6130xx11821.pdf"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Contact Resistance"; Value = "20 mOhm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Gender"; Value = "Female"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mounting Technology"; Value = "THT"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Operating Temperature"; Value = "-40 to 125 degC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Orientation"; Value = "Vertical"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Packaging"; Value = "Tray"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Part Number"; Value = "61300411821"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Pin Number"; Value = "4"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Pitch"; Value = "2.54 mm"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Published Date"; Value = "August 2018"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Publisher"; Value = "Wurth Elektronik"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Rated Current"; Value = "3 A"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Row Number"; Value = "Single"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Withstanding Voltage"; Value = "500 VAC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Working Voltage"; Value = "250 VAC"; VariantName = "[No Variations]"
+Added Component: Designator=R13(R1206_Simple-Assemble_shorted)
+Add component. Clean all parameters for all variants
+Added Pin To Net: NetName=GND Pin=J1-4
+Added Pin To Net: NetName=NetJ1_1 Pin=R13-1
+Added Pin To Net: NetName=Vbat Pin=R13-2
+Added Pin To Net: NetName=NetJ1_2 Pin=U1-34
+Added Pin To Net: NetName=NetJ1_3 Pin=J1-3
+Added Pin To Net: NetName=NetJ1_3 Pin=U1-35
+Added Net: Name=NetJ1_3
+Added Member To Class: ClassName=main_master Member=Component LP1 VLP-350-R
+Added Member To Class: ClassName=main_master Member=Component R13 !0R!

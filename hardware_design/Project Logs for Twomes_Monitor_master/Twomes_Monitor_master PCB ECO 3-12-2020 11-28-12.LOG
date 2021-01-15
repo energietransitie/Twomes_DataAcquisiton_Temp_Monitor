@@ -1,0 +1,25 @@
+Change Component Designator: OldDesignator=R? NewDesignator=R8
+Added Component: Designator=R4(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "82"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=R5(R1206_Simple-Assemble)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Brand"; Value = "MULTICOMP"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Order Code"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Power"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Resistance"; Value = "82"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier"; Value = "Farnell"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetD1_2 Pin=R4-1
+Added Pin To Net: NetName=Vbat Pin=R4-2
+Added Pin To Net: NetName=NetD2_2 Pin=R5-1
+Added Pin To Net: NetName=Vbat Pin=R5-2
+Added Member To Class: ClassName=main_master Member=Component R4 82
+Added Member To Class: ClassName=main_master Member=Component R5 82
