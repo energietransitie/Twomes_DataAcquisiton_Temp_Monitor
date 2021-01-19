@@ -10,9 +10,8 @@
             "includePath": [
                 "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/include",
                 "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/src",
-                "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
-                "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/.pio/libdeps/featheresp32/OneWire",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/config",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_trace",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_update",
@@ -83,6 +82,7 @@
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
+                "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/NetBIOS/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
@@ -94,6 +94,7 @@
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
+                "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 "D:/Users/fredr/.platformio/packages/tool-unity",
                 ""
@@ -103,9 +104,8 @@
                 "path": [
                     "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/include",
                     "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/src",
-                    "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
-                    "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                    "d:/Users/fredr/Github/Twomes_DataAcquisiton_Temp_Monitor/.pio/libdeps/featheresp32/OneWire",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/config",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_trace",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_update",
@@ -176,6 +176,7 @@
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
+                    "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/NetBIOS/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Preferences/src",
@@ -187,6 +188,7 @@
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
+                    "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "D:/Users/fredr/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     "D:/Users/fredr/.platformio/packages/tool-unity",
                     ""

@@ -1,6 +1,7 @@
 #include <Arduino.h>
+#include <OneWire.h>
+
 #include <WiFi.h>
-#include <HTTPClient.h>
 #include <esp_now.h>
 
 uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //REVIEW, this is a broadcast address
