@@ -1,0 +1,10 @@
+//delete .bak from filename
+
+#define destinationMacAddress {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}
+
+//espnow settings:
+#define espnow_channel 0
+#define espnow_encryption false
+
+#define defaultIntervalTime 5
+#define maximum_samples_espnow 20
