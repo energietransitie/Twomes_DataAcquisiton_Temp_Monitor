@@ -17,7 +17,7 @@
 #define TIME_TO_CONVERSION 1      /* Time ESP32 will go to sleep for conversion(in seconds) */
 #define INTERVAL_US 5000000       /* desired interval between conversions */
 
-#define maximum_samples_memory 20   //maximum memory allocated for samples
+#define maximum_samples_memory 20    //maximum memory allocated for samples
 #define start_sample_sent_attempt 10 //amount of measurements where the sent attempts are starting
 
 #if (maximum_samples_memory != maximum_samples_espnow)
@@ -81,7 +81,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) //call ba
   {
     Serial.printf("Delivery Success, so currentMeasurement =0\n");
     currentMeasurement = 0; //zero this if measurement succeed
-    firstMeasurement = 0; //zero this if measurement succeed
+    firstMeasurement = 0;   //zero this if measurement succeed
   }
   else
   {
@@ -259,41 +259,28 @@ void sent_ESPNOW_message()
   //everthing look ok until now, allocate memory
 
   //then copy data in ESP_message(RAM memory)
-  if (firstMeasurement == 0)
+  uint8_t counter2 = firstMeasurement;
+  uint8_t totalSamples = currentMeasurement;
+  if (firstMeasurement != 0)
   {
-    for (uint8_t counter0 = 0; counter0 < currentMeasurement; counter0++)
-    {
-      //printf("measurement[%u].temperature1: %f\n", counter0, measurement[counter0].temperature1);
-      prepareMessage.pipeTemps1[counter0] = measurement[counter0].temperature1;
-      prepareMessage.pipeTemps2[counter0] = measurement[counter0].temperature2;
-    }
-    prepareMessage.numberofMeasurements = currentMeasurement;
+    totalSamples = maximum_samples_memory;
   }
-  else
+  for (uint8_t counter1 = 0; counter1 < (totalSamples); counter1++)
   {
-    uint8_t counter2 = firstMeasurement;
-    uint8_t totalSamples = currentMeasurement;
-    if (firstMeasurement != 0)
-    {
-      totalSamples = maximum_samples_memory;
-    }
-    for (uint8_t counter1 = 0; counter1 < (totalSamples); counter1++)
-    {
 
-      //printf("measurement[%u].temperature1: %f\n", counter1, measurement[counter1].temperature1);
-      prepareMessage.pipeTemps1[counter1] = measurement[counter2].temperature1;
-      prepareMessage.pipeTemps2[counter1] = measurement[counter2].temperature2;
-      if (counter2 < maximum_samples_memory)
-      {
-        counter2++;
-      }
-      else
-      {
-        counter2 = 0;
-      }
+    //printf("measurement[%u].temperature1: %f\n", counter1, measurement[counter1].temperature1);
+    prepareMessage.pipeTemps1[counter1] = measurement[counter2].temperature1;
+    prepareMessage.pipeTemps2[counter1] = measurement[counter2].temperature2;
+    if (counter2 < maximum_samples_memory)
+    {
+      counter2++;
     }
-    prepareMessage.numberofMeasurements = totalSamples;
+    else
+    {
+      counter2 = 0;
+    }
   }
+  prepareMessage.numberofMeasurements = totalSamples;
 
 #if debug_sent_ESPNOW_message
   printf("[ESPNOW]: prepareMessage.numberofMeasurements = %u\n", prepareMessage.numberofMeasurements);
