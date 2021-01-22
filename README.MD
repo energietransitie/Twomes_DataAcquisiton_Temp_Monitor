@@ -28,3 +28,6 @@ send this measurements with ESPNOW to the gateway, this should be low power sinc
 #include <esp_now.h>
 #include <espnow_settings.h>
 ```
+
+## Header files for program settings
+The file espnow_setting.h.bak contain program enviroment variables. To use the simply remove .bak from the file name and fill in the correct values
