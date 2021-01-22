@@ -2,6 +2,7 @@
 Firmware for ESP32 to read and parse data from
 * Two DS18B20 temperature sensors, this is boilerTemp variant
 * One SI7051 temperature sensor, this is roomTemp variant
+
 send this measurements with ESPNOW to the gateway, this should be low power since this hardware is powered from a battery.
 
 ## TODO's and considerations
