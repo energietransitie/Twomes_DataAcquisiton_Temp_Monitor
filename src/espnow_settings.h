@@ -10,4 +10,4 @@
 #define defaultIntervalTime 10
 #define maximum_samples_espnow 60
 
-#define CHANNEL_SSID "TheWorkshop" //ESP-Now requires SSID to read the channel of the network
+#define CHANNEL_SSID "YOUR_SSID" //ESP-Now requires SSID to read the channel of the network (Not used anymore)
