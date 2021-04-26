@@ -1,5 +1,3 @@
-//time correction should be reviewed since the software is optimized
-
 #include <Arduino.h>
 #include <OneWire.h>           //for DS18B20 support
 #include <DallasTemperature.h> //for DS18B20 support
@@ -9,14 +7,14 @@
 #include <esp_wifi.h>
 
 //DEBUG DEFINES:
-// #define DEBUG  1                //Global debug define enable
+// #define DEBUG 1 //Global debug define enable
 
-#define DEBUG_BOOT 1             //Debug startup (Able to boot, check for temp-sensors, CPU frequency)
-#define DEBUG_TEMPERATURE 1     //Debug Temperature measurements (Print temperature values)
-#define DEBUG_TIME 1            //Debug the time adjustment value (Print time since last boot in us)
-#define DEBUG_ESPNOW_SEND 1     //Debug for when sending ESP-Now messages (Print payload and destination MAC address)
-#define DEBUG_CALLBACK 1        //Debug for ESP-Now callback function (de-initalising and check for ACK)
-#define DEBUG_ERRORS 1          //Debug error-messages (init-failures)
+#define DEBUG_BOOT 1        //Debug startup (Able to boot, check for temp-sensors, CPU frequency)
+#define DEBUG_TEMPERATURE 1 //Debug Temperature measurements (Print temperature values)
+#define DEBUG_TIME 1        //Debug the time adjustment value (Print time since last boot in us)
+#define DEBUG_ESPNOW_SEND 1 //Debug for when sending ESP-Now messages (Print payload and destination MAC address)
+#define DEBUG_CALLBACK 1    //Debug for ESP-Now callback function (de-initalising and check for ACK)
+#define DEBUG_ERRORS 1      //Debug error-messages (init-failures)
 
 /** -------------------------------------------------/
  * TODO:
@@ -30,13 +28,13 @@
 #define hardwarePin_sensor1 25 //DS18B20 temperature sensor 1/pipeTemp1
 #define hardwarePin_sensor2 26 //DS18B20 temperature sensor 2/pipeTemp2
 
-#define uS_TO_S_FACTOR 1000000ULL /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP 10 //Ten seconds between measurements
-#define TIME_TO_CONVERSION 1 /* Time ESP32 will go to sleep for conversion(in seconds) */
-#define INTERVAL_US (TIME_TO_SLEEP*uS_TO_S_FACTOR)  /* desired interval between conversions */
-#define RETRY_INTERVAL 5     //The amount of new measurements before a ESP-Now retry after failure
+#define uS_TO_S_FACTOR 1000000ULL                    /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP 10                             //Ten seconds between measurements
+#define TIME_TO_CONVERSION 1                         /* Time ESP32 will go to sleep for conversion(in seconds) */
+#define INTERVAL_US (TIME_TO_SLEEP * uS_TO_S_FACTOR) /* desired interval between conversions */
+#define RETRY_INTERVAL 5                             //The amount of new measurements before a ESP-Now retry after failure
 
-#define maximum_samples_memory 60   //maximum memory allocated for samples
+#define maximum_samples_memory 60    //maximum memory allocated for samples
 #define start_sample_sent_attempt 20 //amount of measurements where the sent attempts are starting
 
 #if (maximum_samples_memory != maximum_samples_espnow)
@@ -47,12 +45,12 @@
 #define systemState_initMeasurement 1 //state where measurement is inited
 #define systemState_readMeasurement 2 //state where inited measurement is read
 
-RTC_DATA_ATTR uint8_t currentMeasurement = 0;    //variable in RTC memory where number of current measurement is stored
+RTC_DATA_ATTR uint8_t currentMeasurement = 0; //variable in RTC memory where number of current measurement is stored
 // RTC_DATA_ATTR uint8_t firstMeasurement = 0;      //variable in RTC memory where number of first measurement in array is stored, for forget previous samples while memory is full
 RTC_DATA_ATTR uint8_t systemState = 0;           //variable in RTC memory where current system state is saved
 RTC_DATA_ATTR uint64_t previous_time = 0;        //REVIEW
 RTC_DATA_ATTR uint64_t time_correction = 400000; //REVIEW, initial time correction
-RTC_DATA_ATTR uint16_t burstNumber = 0;         //Store the amount of databursts that have been done with ESP-Now
+RTC_DATA_ATTR uint16_t burstNumber = 0;          //Store the amount of databursts that have been done with ESP-Now
 
 //Register peer
 esp_now_peer_info_t peerInfo; //place to save ESPNOW peer info
@@ -82,17 +80,19 @@ RTC_DATA_ATTR int16_t temperaturesOut[maximum_samples_memory];
 RTC_DATA_ATTR bool waitForCallback = false;
 
 //NEW int16_t version
-typedef struct ESP_message {
-    uint8_t numberofMeasurements; //number of measurements
-    uint16_t index;                                    //Number identifying the message, only increments on receiving an ACK from Gateway
-    uint8_t intervalTime = defaultIntervalTime;        //(INTERVAL_US / 1000000); //intervalTime in milliSeconds REVIEW, this could be added?
+typedef struct ESP_message
+{
+    uint8_t numberofMeasurements;               //number of measurements
+    uint16_t index;                             //Number identifying the message, only increments on receiving an ACK from Gateway
+    uint8_t intervalTime = defaultIntervalTime; //(INTERVAL_US / 1000000); //intervalTime in milliSeconds REVIEW, this could be added?
     int16_t pipeTemps1[maximum_samples_espnow];
     int16_t pipeTemps2[maximum_samples_espnow];
 } ESP_message;
 ESP_message prepareMessage; //allocate space for this struct //Should/can this be done dynamically?
 
 //call back on ESP message sent
-void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status) {
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+{
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.printf("[ESPNOW]: unregister cb: %d\n", esp_now_unregister_send_cb());
     Serial.printf("[ESPNOW]: delete peer: %d\n", esp_now_del_peer(gateway_mac_address));
@@ -107,7 +107,8 @@ void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status) {
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.print("\r\nLast Packet Send Status: ");
 #endif
-    if (status == ESP_NOW_SEND_SUCCESS) {
+    if (status == ESP_NOW_SEND_SUCCESS)
+    {
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
         Serial.printf("Delivery Success, so currentMeasurement =0\n");
 #endif
@@ -115,21 +116,26 @@ void OnDataSent(const uint8_t* mac_addr, esp_now_send_status_t status) {
         burstNumber++;          //Add to the total amount of samples sent
     }
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
-    else {
+    else
+    {
         Serial.printf("Delivery Fail\n");
     }
 #endif
-    //Go to sleep only after ESP_Now message is completely processed 
+    //Go to sleep only after ESP_Now message is completely processed
     systemState = systemState_initMeasurement;
     waitForCallback = false;
     return;
 }
 
 //Function to get the channel of the local Wi-Fi network using supplied SSID:
-int32_t getWiFiChannel(const char* ssid) {
-    if (int32_t n = WiFi.scanNetworks()) {
-        for (uint8_t i = 0; i < n; i++) {
-            if (!strcmp(ssid, WiFi.SSID(i).c_str())) {
+int32_t getWiFiChannel(const char *ssid)
+{
+    if (int32_t n = WiFi.scanNetworks())
+    {
+        for (uint8_t i = 0; i < n; i++)
+        {
+            if (!strcmp(ssid, WiFi.SSID(i).c_str()))
+            {
                 return WiFi.channel(i);
             }
         }
@@ -137,7 +143,8 @@ int32_t getWiFiChannel(const char* ssid) {
     return 0;
 }
 
-void setup() {
+void setup()
+{
 #if defined(DEBUG) //Serial only has to be started when debugging:
     Serial.begin(115200);
 #endif
@@ -147,9 +154,11 @@ void setup() {
     peerInfo.encrypt = false;                           //espnow_encryption;
 #if defined(DEBUG) & defined(DEBUG_BOOT)
     Serial.print("CPU frequency: ");
-    Serial.println(getCpuFrequencyMhz());   //Check for80Mhz
+    Serial.println(getCpuFrequencyMhz()); //Check for80Mhz
 #endif
-    while (1) {
+uint8_t amountSensors;
+    while (1)
+    {
         switch (systemState) //this is a state machine
         {
         case systemState_unknown: //first run/sensors not connected?, this could be detection for hardware variant
@@ -158,37 +167,27 @@ void setup() {
             Serial.println("booted for the first time");
 #endif
             temperature_sensor1.begin();
-            temperature_sensor2.begin();
+            // temperature_sensor2.begin();
             delay(10); //give time for initing
-
-            if (temperature_sensor1.getDeviceCount()) {
-#if defined(DEBUG) & defined(DEBUG_BOOT)
-                Serial.printf("Found temperature_sensor1\n");
-#endif
-                if (temperature_sensor2.getDeviceCount()) {
-#if defined(DEBUG) & defined(DEBUG_BOOT)
-                    Serial.printf("Found temperature_sensor2, complete so start measurements\n");
-#endif
-                    systemState = systemState_initMeasurement;
-                } else {
-#if defined(DEBUG) & defined(DEBUG_BOOT)
-                    Serial.printf("Did not find temperature_sensor2\n");
-#endif
-                    delay(1000);
-                }
-            } else {
-#if defined(DEBUG) & defined(DEBUG_BOOT)
-                Serial.printf("Did not find temperature_sensor1\n");
-#endif
+            amountSensors = temperature_sensor1.getDeviceCount();
+            if (amountSensors != 1)
+            {
+                Serial.println("Missing temperature sensors!");
+                Serial.printf("Found only %d sensors", amountSensors);
                 delay(1000);
             }
-
+            else
+            {
+                Serial.printf("Found %d sensors", amountSensors);
+                Serial.println("Ready to start measuring!");
+                systemState = systemState_initMeasurement;
+            }
             break;
-        case systemState_initMeasurement:                  //init measurement
+        case systemState_initMeasurement:                    //init measurement
             temperature_sensor1.begin();                     //initialize sensor
             temperature_sensor1.setWaitForConversion(false); //disable the wait for conversion
             temperature_sensor1.requestTemperatures();       //start conversion
-            temperature_sensor2.begin();                     //initialize sensor
+            temperature_sensor2.begin();                     //initialize sensor whenusing double bus
             temperature_sensor2.setWaitForConversion(false); //disable the wait for conversion
             temperature_sensor2.requestTemperatures();       //start conversion
 
@@ -212,9 +211,10 @@ void setup() {
             measurement[currentMeasurement].temperature1 = temperature_sensor1.getTempCByIndex(0); // get the temperature of the sensor
             measurement[currentMeasurement].temperature2 = temperature_sensor2.getTempCByIndex(0); // get the temperature of the sensor
             */
-            if (currentMeasurement >= maximum_samples_memory) {
+            if (currentMeasurement >= maximum_samples_memory)
+            {
                 //move all samples "RETRY_INTERVAL" amount of spaces in memory, overwriting "RETRY_INTERVAL" old measurements and making room for "RETRY_INTERVAL" new ones.
-                //Theoretically speaking, currentMeasurement should in this case always be equal to maximum_samples_memor, and never exceed it. 
+                //Theoretically speaking, currentMeasurement should in this case always be equal to maximum_samples_memor, and never exceed it.
                 memmove(temperaturesIn, &temperaturesIn[(currentMeasurement - maximum_samples_memory) + RETRY_INTERVAL], (maximum_samples_memory - RETRY_INTERVAL) * sizeof(temperaturesIn[0]));
                 memmove(temperaturesOut, &temperaturesOut[(currentMeasurement - maximum_samples_memory) + RETRY_INTERVAL], (maximum_samples_memory - RETRY_INTERVAL) * sizeof(temperaturesOut[0]));
                 currentMeasurement = maximum_samples_memory - RETRY_INTERVAL;
@@ -223,9 +223,11 @@ void setup() {
             DeviceAddress address1;
             DeviceAddress address2;
             temperature_sensor1.getAddress(address1, 0);
-            temperature_sensor2.getAddress(address2, 0);
+            temperature_sensor2.getAddress(address2, 0); //Using seperate bus
+            // temperature_sensor1.getAddress(address2, 1); //Using same bus
             temperaturesIn[currentMeasurement] = temperature_sensor1.getTemp(address1);
-            temperaturesOut[currentMeasurement] = temperature_sensor2.getTemp(address2);
+            temperaturesOut[currentMeasurement] = temperature_sensor2.getTemp(address2); //Using seperate bus
+            // temperaturesOut[currentMeasurement] = temperature_sensor1.getTemp(address2); //Using same bus
 #if defined(DEBUG) & defined(DEBUG_TEMPERATURE)
             Serial.print("Temp1: ");
             Serial.println(temperaturesIn[currentMeasurement], HEX);
@@ -259,7 +261,7 @@ void setup() {
 #if defined(DEBUG) & defined(DEBUG_TIME)
             Serial.println(time_delta);
 #endif
-            time_correction += (time_delta - INTERVAL_US); // finetune time correction
+            time_correction += (time_delta - INTERVAL_US);                                   // finetune time correction
             esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR - time_correction); //sleep until next temperature reading
 
             if (currentMeasurement < start_sample_sent_attempt) //if there are not enough samples yet
@@ -267,15 +269,18 @@ void setup() {
 #if defined(DEBUG) & defined(DEBUG_TEMPERATURE)
                 Serial.printf("Collecting new measurement\n");
 #endif
-            } else if (currentMeasurement == start_sample_sent_attempt || (currentMeasurement > start_sample_sent_attempt && !((currentMeasurement - start_sample_sent_attempt) % RETRY_INTERVAL))) { //if there are enough samples to send
+            }
+            else if (currentMeasurement == start_sample_sent_attempt || (currentMeasurement > start_sample_sent_attempt && !((currentMeasurement - start_sample_sent_attempt) % RETRY_INTERVAL)))
+            { //if there are enough samples to send
                 sent_ESPNOW_message();
                 waitForCallback = true;
-                while (waitForCallback) {
+                while (waitForCallback)
+                {
 #if defined(DEBUG) && defined(DEBUG_CALLBACK)
                     Serial.println("waiting for callback");
 #endif
                     delay(500);
-                } //Wait for ESP-Now Callback function 
+                } //Wait for ESP-Now Callback function
             }
 
             systemState = systemState_initMeasurement;
@@ -283,19 +288,18 @@ void setup() {
             Serial.println("Entering Sleep mode");
 #endif
             esp_light_sleep_start(); //go to deepsleep
-
         }
         break;
         }
     }
 }
 
-
-
-void sent_ESPNOW_message() {
+void sent_ESPNOW_message()
+{
     uint8_t channel = 1;
-    WiFi.mode(WIFI_STA);          //this mode is required for ESP NOW, if you forget this the CPU will panic.
-    if (esp_now_init() != ESP_OK) {//if initing wasn't succesful
+    WiFi.mode(WIFI_STA); //this mode is required for ESP NOW, if you forget this the CPU will panic.
+    if (esp_now_init() != ESP_OK)
+    { //if initing wasn't succesful
 #if defined(DEBUG) & defined(DEBUG_ERRORS)
         Serial.println("Error initializing ESP-NOW");
 #endif
@@ -333,7 +337,8 @@ void sent_ESPNOW_message() {
     Serial.printf("[ESPNOW]: prepareMessage.numberofMeasurements = %u\n", prepareMessage.numberofMeasurements);
     Serial.printf("[ESPNOW]: prepareMessage.intervalTime = %u\n", prepareMessage.intervalTime);
     Serial.printf("[ESPNOW]: preparemessage.index = %u\n", prepareMessage.index);
-    for (uint8_t counter1 = 0; counter1 < prepareMessage.numberofMeasurements; counter1++) {
+    for (uint8_t counter1 = 0; counter1 < prepareMessage.numberofMeasurements; counter1++)
+    {
         // printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1]); //Old float version
         // printf("[ESPNOW]: prepareMessage.pipeTemps2[%u] = %f\n", counter1, prepareMessage.pipeTemps2[counter1]);
         Serial.printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1] * 0.0078125f); //New int16_t, print as float for debugging
@@ -342,9 +347,10 @@ void sent_ESPNOW_message() {
     Serial.printf("[ESPNOW]: This should be the message\n");
 #endif
 
-    esp_err_t result = esp_now_send(gateway_mac_address, (uint8_t*)&prepareMessage, sizeof(prepareMessage));
+    esp_err_t result = esp_now_send(gateway_mac_address, (uint8_t *)&prepareMessage, sizeof(prepareMessage));
 
-    if (result != ESP_OK) {
+    if (result != ESP_OK)
+    {
 #if defined(DEBUG) & defined(DEBUG_ESPNOW_SEND)
         Serial.printf("Error sending the data, with return %u\n", result);
 #endif
@@ -353,16 +359,19 @@ void sent_ESPNOW_message() {
         return;
     }
 #if defined(DEBUG) & defined(DEBUG_ESPNOW_SEND)
-    else {
+    else
+    {
         Serial.print("[ESPNOW]: Sent with success to address: ");
-        for (uint8_t i = 0; i < 6; i++) {
+        for (uint8_t i = 0; i < 6; i++)
+        {
             Serial.print((peerInfo.peer_addr[i]), HEX);
             Serial.print(":");
         }
         Serial.println();
     }
 #else
-    else return;
+    else
+        return;
 #endif
 }
 
