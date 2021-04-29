@@ -22,40 +22,38 @@ You can download and locally install the lastest installable version(s) via <lin
 Describe how to use / adapt/ compile the souce code. 
 
 ## Features
-List of features ready and TODOs for future development. Ready:
+List of features ready and TODOs for future development. 
 
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+Ready:
+* Measure temperatures using two DS18b20 sensors
+* Sleep between conversions for ultra-low power consumption
+* Send data to a gateway device using ESP-Now
 
 To-do:
-
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* Implement Channel Provisioning via Gateway and save via NVS
+* Implement status- and error indicators using LEDs
 
 ## Status
-Project is: _in progress_, _finished_, _no longer continue_ and why?
+Project is: in Progress.
+In its current state the software can properly read temperatures and send these via ESP-Now.
+There are still some missing features that need to be implemented, see [To-do](#features) for more info
 
 ## License
 This software is available under the [Apache 2.0 license](./LICENSE.md), Copyright 2021 [Research group Energy Transition, Windesheim University of Applied Sciences](https://windesheim.nl/energietransitie) 
 
 ## Credits
 This software is a collaborative effort the following students and researchers:
-* <contributor name 1> ·  [@Github_handle_1](https://github.com/<github_handle_1>) ·  Twitter [@Twitter_handle_1](https://twitter.com/<twitter_handle_1>)
-* <contributor name 2> ·  [@Github_handle_2](https://github.com/<github_handle_2>) ·  Twitter [@Twitter_handle_2](https://twitter.com/<twitter_handle_2>)
-* <contributor name 3> ·  [@Github_handle_3](https://github.com/<github_handle_3>) ·  Twitter [@Twitter_handle_3](https://twitter.com/<twitter_handle_3>)
-* etc. 
+* Fredrik-Otto Lautenbag ·  [@Fredrik1997](https://github.com/Fredrik1997)
+* Gerwin Buma ·  [@GerwinBuma](https://github.com/GerwinBuma) 
+* Werner Heetebrij ·  [@Werner-Heetebrij] (https://github.com/Werner-Heetebrij)
+* Sjors Smit ·  [@Shorts1999](https://github.com/Shorts1999)
 
 
 We use and gratefully aknowlegde the efforts of the makers of the following source code and libraries:
 
-* [arduino-esp32](https://github.com/espressif/arduino-esp32), by <Espressif>, licensed under [GNU LGPL-2.1](https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md)
-* [OneWire.h](https://github.com/PaulStoffregen/OneWire), by <Paul Stoffregen and others>, licensed under [unknown](license2 URL)
-* [DallasTemperature.h](https://github.com/milesburton/Arduino-Temperature-Control-Library), by <Miles Burton>, licensed under [GNU LGPL-2.1](https://github.com/milesburton/Arduino-Temperature-Control-Library#license)
-* [](library 3 URL), by <copyright holder name 3>, licensed under [license 3 name](license3 URL)
-* [library name 3 and version](library 3 URL), by <copyright holder name 3>, licensed under [license 3 name](license3 URL)
-* [library name 3 and version](library 3 URL), by <copyright holder name 3>, licensed under [license 3 name](license3 URL)
-* [library name 3 and version](library 3 URL), by <copyright holder name 3>, licensed under [license 3 name](license3 URL)
+* [arduino-esp32](https://github.com/espressif/arduino-esp32), by Espressif, licensed under [GNU LGPL-2.1](https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md)
+* [OneWire.h](https://github.com/PaulStoffregen/OneWire), by Paul Stoffregen and others, licensed under [unknown](license2 URL)
+* [DallasTemperature.h](https://github.com/milesburton/Arduino-Temperature-Control-Library), by Miles Burton, licensed under [GNU LGPL-2.1](https://github.com/milesburton/Arduino-Temperature-Control-Library#license)
 
 ## Contact
 <not yet determined; which contact info to include here?>
