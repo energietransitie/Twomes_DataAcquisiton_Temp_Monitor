@@ -5,6 +5,8 @@
 #include <esp_now.h>            //For sending and receiving ESP-NOW messages
 #include <espnow_settings.h>    //Contains addresses and message limits
 #include <esp_wifi.h>           //For setting channel
+#include <Preferences.h>        //Non-Volatile Storage write and read
+#include <nvs_flash.h>          //Non-Volatile Storage erase
 
 //DEBUG DEFINES:
 #define DEBUG 1              //Global debug define enable
@@ -15,6 +17,7 @@
 #define DEBUG_ESPNOW_SEND 1     //Debug for when sending ESP-Now messages (Print payload and destination MAC address)
 #define DEBUG_CALLBACK 1        //Debug for ESP-Now callback function (de-initalising and check for ACK)
 #define DEBUG_ERRORS 1          //Debug error-messages (init-failures)
+#define DEBUG_PROVISIONING 1    //Debug sensor provisioning
 
 /** -------------------------------------------------/
  * @todo:
@@ -27,7 +30,12 @@
  * - automate deep- or light sleep depending on interval time [] (light sleep for <=10 seconds, deep sleep for >10 seconds)
 ----------------------------------------------------*/
 
-#define ONEWIRE_BUS_PIN 25 //pin for OneWire bus
+#define ONEWIRE_BUS_PIN 25  //pin for OneWire bus
+#define BUTTON_P1 0         //Button P1 on GPIO0
+#define BUTTON_P2 15        //Button P2 on GPIO15
+#define LED_ERROR 14        //Error LED on GPIO 14
+#define LED_STATUS 12       //Status LED on GPIO12
+#define SUPERCAP_ENABLE 27  //Pull low to enable supercap
 
 #define uS_TO_S_FACTOR 1000000ULL                    /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP 10                             /* Time between measurements */
@@ -46,7 +54,8 @@
 enum systemStates {
     UNKNOWN,           //boot after power loss (RTC data cleared) or first boot
     INIT_MEASUREMENT,  //state where measurement is initialised
-    READ_MEASUREMENT   //state where measurement is read
+    READ_MEASUREMENT,   //state where measurement is read
+    PROVISION_SENSOR    //State where sensor gets provisioned with channel and gateway MAC through ESP-Now
 }; /* systemstates*/
 RTC_DATA_ATTR systemStates systemState = UNKNOWN;           //variable in RTC memory where current system state is saved
 
@@ -60,34 +69,54 @@ esp_now_peer_info_t peerInfo; //place to save ESPNOW peer info
 
 //prototype functions
 void sendESPNOWmessage(); //function to send ESPNOW message
-void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status); //ESP-Now callback function
+void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status); //ESP-Now send callback function
+void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length); //ESP-Now receive callabck function
 
 uint8_t gatewayAddress[6] = GATEWAY_MAC_ADDRESS;    //Temporary declarations, will be read from NVS later
 
-OneWire oneWireBus(ONEWIRE_BUS_PIN); //init software OneWire bus
+OneWire oneWireBus(ONEWIRE_BUS_PIN); //software OneWire bus
 
-DallasTemperature tempSensors(&oneWireBus); //init temperature bus
+DallasTemperature tempSensors(&oneWireBus); //temperature object
 
+Preferences preferences;                //preferences object
 
 RTC_DATA_ATTR int16_t temp1[MAX_SAMPLES_MEMORY];
 RTC_DATA_ATTR int16_t temp2[MAX_SAMPLES_MEMORY];
 RTC_DATA_ATTR bool waitForCallback = false;
 
+//Twomes Measurement type enum:
+enum ESPNOWdataTypes {
+    BOILERTEMP,
+    ROOMTEMP,
+    CO2,
+};
+
 //NEW int16_t version to increase amount of measurements in single burst
 typedef struct ESP_message {
-    uint8_t numberofMeasurements;               //number of measurements
-    uint16_t index;                             //Number identifying the message, only increments on receiving an ACK from Gateway
-    uint8_t intervalTime = TIME_TO_SLEEP;       //Interval between measurements, for timestamping in gateway
-    int16_t pipeTemps1[MAX_SAMPLES_ESPNOW];     //measurements of the first temperature sensor
-    int16_t pipeTemps2[MAX_SAMPLES_ESPNOW];     //measurements of the second temperature sensor
+    uint8_t measurementType = BOILERTEMP;  //Type of measurements
+    uint8_t numberofMeasurements;                       //number of measurements in burst
+    uint16_t index;                                     //Number identifying the message, only increments on receiving an ACK from Gateway
+    uint8_t intervalTime = TIME_TO_SLEEP;               //Interval between measurements, for timestamping in gateway
+    int16_t pipeTemps1[MAX_SAMPLES_ESPNOW];             //measurements of the first temperature sensor
+    int16_t pipeTemps2[MAX_SAMPLES_ESPNOW];             //measurements of the second temperature sensor
 } ESP_message;
 ESP_message prepareMessage; //allocate space for this struct //Should/can this be done dynamically?
-
 
 void setup() {
 #if defined(DEBUG) //Serial only has to be started when debugging:
     Serial.begin(115200);
 #endif
+    pinMode(BUTTON_P1, INPUT_PULLUP);
+    pinMode(BUTTON_P2, INPUT_PULLUP);
+    pinMode(LED_STATUS, OUTPUT);
+    pinMode(LED_ERROR, OUTPUT);
+    pinMode(SUPERCAP_ENABLE, OUTPUT);
+    digitalWrite(SUPERCAP_ENABLE, HIGH); //Pmos = active low
+    //Check for P2 (GPIO15) pressed on boot
+    if (!digitalRead(BUTTON_P2)) {
+        systemState = systemStates::PROVISION_SENSOR;
+    } //if(!digitalRead(BUTTON_P2))
+
     //Needs loop for lightsleep, since program counter is saved
     while (1) {
         //this is a state machine
@@ -95,6 +124,14 @@ void setup() {
             //First boot or power loss, re-initialise:
             case systemStates::UNKNOWN: //first run/sensors not connected?, this could be detection for hardware variant
 #if defined(DEBUG) & defined(DEBUG_BOOT)
+//Blink LED to indicat being in state "UNKNOWN"
+                digitalWrite(LED_ERROR, HIGH);
+                delay(50);
+                digitalWrite(LED_ERROR, LOW);
+                delay(50);
+                digitalWrite(LED_ERROR, HIGH);
+                delay(50);
+                digitalWrite(LED_ERROR, LOW);
                 Serial.println("Device has started");
                 Serial.println("booted for the first time");
 #endif
@@ -104,6 +141,7 @@ void setup() {
                 if (tempSensors.getDeviceCount() != 2) {
 #if defined(DEBUG) & defined(DEBUG_BOOT)
                     Serial.println("Missing temperature sensors!");
+                    Serial.println(tempSensors.getDeviceCount());
 #endif
                     delay(500);
                 } //if getDeviceCount != 2
@@ -113,13 +151,12 @@ void setup() {
 #endif
                     systemState = systemStates::INIT_MEASUREMENT;
                 } //if get DeviceCount == 2
-                break; //end of systemStates::UNKNOWN
+                break; //systemStates::UNKNOWN
             //init measurement
             case systemStates::INIT_MEASUREMENT:
                 tempSensors.begin();                     //initialize sensor
                 tempSensors.setWaitForConversion(false); //disable the wait for conversion
                 tempSensors.requestTemperatures();       //start conversion
-
                 esp_sleep_enable_timer_wakeup(TIME_TO_CONVERSION * uS_TO_S_FACTOR); //sleep for 1 second during conversion
 
                 systemState = systemStates::READ_MEASUREMENT; //set conversion is started bit
@@ -141,7 +178,7 @@ void setup() {
                     memmove(temp1, &temp1[(currentMeasurement - MAX_SAMPLES_MEMORY) + RETRY_INTERVAL], (MAX_SAMPLES_MEMORY - RETRY_INTERVAL) * sizeof(temp1[0]));
                     memmove(temp2, &temp2[(currentMeasurement - MAX_SAMPLES_MEMORY) + RETRY_INTERVAL], (MAX_SAMPLES_MEMORY - RETRY_INTERVAL) * sizeof(temp2[0]));
                     currentMeasurement = MAX_SAMPLES_MEMORY - RETRY_INTERVAL;
-                }
+                }//if(currentMeasurement >= MAX_SAMPLES_MEMORY)
 
                 DeviceAddress address1;
                 DeviceAddress address2;
@@ -160,15 +197,14 @@ void setup() {
                 Serial.print("Temp 2: ");
                 Serial.println(temp2[currentMeasurement] * 0.0078125f); //Conversion to Celsius from DallasTemperature library to check if HEX value was read correctly
 #endif
-                if ((temp1[currentMeasurement] == DEVICE_DISCONNECTED_RAW) || (temp2[currentMeasurement] == DEVICE_DISCONNECTED_RAW))
-                {
+                if ((temp1[currentMeasurement] == DEVICE_DISCONNECTED_RAW) || (temp2[currentMeasurement] == DEVICE_DISCONNECTED_RAW)) {
 #if defined(DEBUG) & defined(DEBUG_TEMPERATURE)
                     Serial.println("\n\n\n\nNow everything should be deleted, and starting again"); //temp error message
 #endif
                     currentMeasurement = 0;            //set to zero to reinit all.
                     systemState = systemStates::UNKNOWN; //go back to previous step
                     break;                             // init everything again
-                }
+                }//if(temp1 || temp2)
                 currentMeasurement++; //Add to currentMeasurement AFTER measuring, but BEFORE sending! (0 indexing for writing to memory, but not for comparing to ready_to_send)
 #if defined(DEBUG) & defined(DEBUG_TEMPERATURE)
                 Serial.printf("\n\n\ncurrentMeasurement: %u\n", currentMeasurement);
@@ -188,7 +224,7 @@ void setup() {
 #if defined(DEBUG) & defined(DEBUG_TEMPERATURE)
                     Serial.printf("Collecting new measurement\n");
 #endif
-                }
+                } //if(currentMEasurement<ESPNOW_SEND_MINIMUM)
                 else if (currentMeasurement == ESPNOW_SEND_MINIMUM || (currentMeasurement > ESPNOW_SEND_MINIMUM && !((currentMeasurement - ESPNOW_SEND_MINIMUM) % RETRY_INTERVAL))) { //if there are enough samples to send
                     sendESPNOWmessage();
                     waitForCallback = true;
@@ -198,7 +234,7 @@ void setup() {
 #endif
                         delay(500);
                     } //Wait for ESP-Now Callback function
-                }
+                }//esle if (enough samples to send)
 
                 systemState = systemStates::INIT_MEASUREMENT;
 #ifdef DEBUG
@@ -209,13 +245,51 @@ void setup() {
 #else
                 esp_light_sleep_start(); //go to sleep
 #endif
-            }
+            }//case READ_MEASUREMENT
             break;
-        }
-    } // switch systemState
+
+            case systemStates::PROVISION_SENSOR:
+            {
+                WiFi.mode(WIFI_STA); //Enter STA mode to enable ESP-Now
+                if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
+#if defined(DEBUG) & defined(DEBUG_ERRORS)
+                    Serial.println("Error initializing ESP-NOW");
+#endif
+                    esp_now_deinit();
+                    WiFi.mode(WIFI_OFF);
+                    break;
+                }
+                //If ESP-Now init is OK, open Preferences:
+                if (!preferences.begin("ESPNOW", false)) {
+                    preferences.end();
+                    esp_now_deinit();
+                    WiFi.mode(WIFI_OFF);
+                    break;
+                }
+                esp_now_register_recv_cb(onDataReceive);
+                //press Button1 to break out of provisioning loop if provisioning is not working/needed:
+                while (digitalRead(BUTTON_P1)) {
+#if defined(DEBUG) & defined(DEBUG_PROVISIONING)
+                    Serial.println("Watining for ESP-Now message");
+                    delay(500);
+#endif
+                }
+                esp_now_deinit();
+                WiFi.mode(WIFI_OFF);
+                systemState = systemStates::UNKNOWN;
+            }//case PROVISION_SENSOR
+            break;
+            default:
+            {
+            }//default
+            break;
+        }// switch systemState
+    } //while(1)
 }
 
 void sendESPNOWmessage() {
+    //Enable SuperCap:
+    digitalWrite(SUPERCAP_ENABLE, LOW);
     uint8_t channel = 1;
     WiFi.mode(WIFI_STA); //this mode is required for ESP NOW, if you forget this the CPU will panic.
     if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
@@ -297,11 +371,13 @@ void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status) {
     Serial.printf("[ESPNOW]: delete peer: %d\n", esp_now_del_peer(gatewayAddress));
     Serial.println(String("[ESP-Now] De-init ") + String((esp_now_deinit() ? "failed" : "Succes")));
     Serial.println(String("[WiFi] Turn off WiFi ") + String(WiFi.mode(WIFI_OFF) ? "Succes" : "Failed"));
+    digitalWrite(SUPERCAP_ENABLE, HIGH); //Disable supercap
 #else
     esp_now_unregister_send_cb();
     esp_now_del_peer(gatewayAddress);
     esp_now_deinit();
     WiFi.mode(WIFI_OFF);
+    digitalWrite(SUPERCAP_ENABLE, HIGH); //Disable supercap
 #endif
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.print("\r\nLast Packet Send Status: ");
@@ -324,5 +400,19 @@ void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status) {
     return;
 }
 
+void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length) {
+    //Read the MAC of the sender and store it in Preferences:
+    preferences.putBytes("P1Address", macAddress, 6); //Store in NVS
+    preferences.putUChar("channel", *payload);
+#if defined(DEBUG) & defined(DEBUG_PROVISIONING)
+    Serial.print("Received message from MAC address: ");
+    uint8_t gatewayMac[6];
+    for (uint8_t i = 0; i < 6;i++) {
+        Serial.print(macAddress[i]);
+        Serial.print(':');
+    }
+    Serial.printf("\nMessage contains ESP-Now channel: %d \n", *payload);
+#endif
+}
 
 void loop() {}
