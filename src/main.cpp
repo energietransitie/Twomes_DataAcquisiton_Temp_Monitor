@@ -1,12 +1,13 @@
 #include <Arduino.h>
+#include <sensor_IO.h>
 #include <OneWire.h>           //for DS18B20 support
 #include <DallasTemperature.h> //for DS18B20 support
 #include <WiFi.h>               //For setting WiFi mode REVIEW could this be done using the esp_wifi.h as well?
 #include <esp_now.h>            //For sending and receiving ESP-NOW messages
 #include <espnow_settings.h>    //Contains addresses and message limits
+#include <twomes_sensor_pairing.h>
 #include <esp_wifi.h>           //For setting channel
-#include <Preferences.h>        //Non-Volatile Storage write and read
-#include <nvs_flash.h>          //Non-Volatile Storage erase
+#include <nvs.h>                //For storing and reading Gateway MAC and channel
 
 //DEBUG DEFINES:
 #define DEBUG 1              //Global debug define enable
@@ -31,10 +32,6 @@
 ----------------------------------------------------*/
 
 #define ONEWIRE_BUS_PIN 25  //pin for OneWire bus
-#define BUTTON_P1 0         //Button P1 on GPIO0
-#define BUTTON_P2 15        //Button P2 on GPIO15
-#define LED_ERROR 14        //Error LED on GPIO 14
-#define LED_STATUS 12       //Status LED on GPIO12
 #define SUPERCAP_ENABLE 27  //Pull low to enable supercap
 
 #define uS_TO_S_FACTOR 1000000ULL                    /* Conversion factor for micro seconds to seconds */
@@ -72,13 +69,10 @@ void sendESPNOWmessage(); //function to send ESPNOW message
 void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status); //ESP-Now send callback function
 void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length); //ESP-Now receive callabck function
 
-uint8_t gatewayAddress[6] = GATEWAY_MAC_ADDRESS;    //Temporary declarations, will be read from NVS later
-
 OneWire oneWireBus(ONEWIRE_BUS_PIN); //software OneWire bus
 
 DallasTemperature tempSensors(&oneWireBus); //temperature object
 
-Preferences preferences;                //preferences object
 
 RTC_DATA_ATTR int16_t temp1[MAX_SAMPLES_MEMORY];
 RTC_DATA_ATTR int16_t temp2[MAX_SAMPLES_MEMORY];
@@ -95,8 +89,8 @@ enum ESPNOWdataTypes {
 typedef struct ESP_message {
     uint8_t measurementType = BOILERTEMP;  //Type of measurements
     uint8_t numberofMeasurements;                       //number of measurements in burst
-    uint16_t index;                                     //Number identifying the message, only increments on receiving an ACK from Gateway
-    uint8_t intervalTime = TIME_TO_SLEEP;               //Interval between measurements, for timestamping in gateway
+    uint16_t index;                                     //Number identifying the message, only increments on receiving an ACK from Gateway. Could be uint8_t since overflows are ignored?
+    uint16_t intervalTime = TIME_TO_SLEEP;               //Interval between measurements, for timestamping in gateway
     int16_t pipeTemps1[MAX_SAMPLES_ESPNOW];             //measurements of the first temperature sensor
     int16_t pipeTemps2[MAX_SAMPLES_ESPNOW];             //measurements of the second temperature sensor
 } ESP_message;
@@ -259,21 +253,18 @@ void setup() {
                     WiFi.mode(WIFI_OFF);
                     break;
                 }
-                //If ESP-Now init is OK, open Preferences:
-                if (!preferences.begin("ESPNOW", false)) {
-                    preferences.end();
-                    esp_now_deinit();
-                    WiFi.mode(WIFI_OFF);
-                    break;
-                }
+                //Set the channel to the defined channel for Sensor pairing (Should be the same in the P1-Gateway!!)
+                esp_wifi_set_channel(ESPNOW_PAIRING_CHANNEL, WIFI_SECOND_CHAN_NONE);
+
                 esp_now_register_recv_cb(onDataReceive);
                 //press Button1 to break out of provisioning loop if provisioning is not working/needed:
                 while (digitalRead(BUTTON_P1)) {
 #if defined(DEBUG) & defined(DEBUG_PROVISIONING)
                     Serial.println("Watining for ESP-Now message");
-                    delay(500);
+                    delay(1000);
 #endif
                 }
+                esp_now_unregister_recv_cb();
                 esp_now_deinit();
                 WiFi.mode(WIFI_OFF);
                 systemState = systemStates::UNKNOWN;
@@ -290,7 +281,15 @@ void setup() {
 void sendESPNOWmessage() {
     //Enable SuperCap:
     digitalWrite(SUPERCAP_ENABLE, LOW);
-    uint8_t channel = 1;
+
+    //Get the MAC address and channel from NVS:
+    uint8_t macAddress[6];
+    uint8_t channel;
+    esp_err_t err = getGatewayData(macAddress, sizeof(macAddress), &channel);
+    if (err != ESP_OK) {
+        ESP_LOGE("READ-CHANNEL", "Error trying to read data from NVS: %s", esp_err_to_name(err));
+    }
+
     WiFi.mode(WIFI_STA); //this mode is required for ESP NOW, if you forget this the CPU will panic.
     if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
 #if defined(DEBUG) & defined(DEBUG_ERRORS)
@@ -302,12 +301,19 @@ void sendESPNOWmessage() {
     }
     esp_now_register_send_cb(onDataSent); //register call back to fetch send reaction
 
+#if defined(DEBUG)
+    Serial.println(" Now validating NVS address: ");
+    for (uint8_t i = 0; i < 6;i++) {
+        Serial.print(macAddress[i], HEX);
+        Serial.print(':');
+    }
+    Serial.printf("Sending on channel %u", channel);
+#endif
     // Add peer
-    memcpy(peerInfo.peer_addr, gatewayAddress, 6);
+    memcpy(peerInfo.peer_addr, macAddress, 6);
     //Before sending, retrieve the Wi-Fi channel of the local network:
-    esp_wifi_set_promiscuous(true);
     esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
-    esp_wifi_set_promiscuous(false);
+
     if (esp_now_add_peer(&peerInfo) != ESP_OK) //add to peer
     {
 #if defined(DEBUG) & defined(DEBUG_ERRORS)
@@ -318,9 +324,6 @@ void sendESPNOWmessage() {
         //esp_now_del_peer(&peerInfo.peer_addr);
         return;
     }
-#if defined(DEBUG) & defined(DEBUG_ESPNOW_SEND)
-    Serial.println("Connected");
-#endif
 
     prepareMessage.numberofMeasurements = currentMeasurement;
     prepareMessage.index = burstNumber;
@@ -339,7 +342,7 @@ void sendESPNOWmessage() {
     Serial.printf("[ESPNOW]: This should be the message\n");
 #endif
 
-    esp_err_t result = esp_now_send(gatewayAddress, (uint8_t *)&prepareMessage, sizeof(prepareMessage));
+    esp_err_t result = esp_now_send(macAddress, (uint8_t *)&prepareMessage, sizeof(prepareMessage));
 
     if (result != ESP_OK) {
 #if defined(DEBUG) & defined(DEBUG_ESPNOW_SEND)
@@ -368,17 +371,16 @@ void sendESPNOWmessage() {
 void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status) {
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.printf("[ESPNOW]: unregister cb: %d\n", esp_now_unregister_send_cb());
-    Serial.printf("[ESPNOW]: delete peer: %d\n", esp_now_del_peer(gatewayAddress));
+    // Serial.printf("[ESPNOW]: delete peer: %d\n", esp_now_del_peer(gatewayAddress));
     Serial.println(String("[ESP-Now] De-init ") + String((esp_now_deinit() ? "failed" : "Succes")));
     Serial.println(String("[WiFi] Turn off WiFi ") + String(WiFi.mode(WIFI_OFF) ? "Succes" : "Failed"));
-    digitalWrite(SUPERCAP_ENABLE, HIGH); //Disable supercap
 #else
     esp_now_unregister_send_cb();
     esp_now_del_peer(gatewayAddress);
     esp_now_deinit();
     WiFi.mode(WIFI_OFF);
-    digitalWrite(SUPERCAP_ENABLE, HIGH); //Disable supercap
 #endif
+    digitalWrite(SUPERCAP_ENABLE, HIGH); //Disable supercap
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.print("\r\nLast Packet Send Status: ");
 #endif
@@ -400,19 +402,6 @@ void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status) {
     return;
 }
 
-void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length) {
-    //Read the MAC of the sender and store it in Preferences:
-    preferences.putBytes("P1Address", macAddress, 6); //Store in NVS
-    preferences.putUChar("channel", *payload);
-#if defined(DEBUG) & defined(DEBUG_PROVISIONING)
-    Serial.print("Received message from MAC address: ");
-    uint8_t gatewayMac[6];
-    for (uint8_t i = 0; i < 6;i++) {
-        Serial.print(macAddress[i]);
-        Serial.print(':');
-    }
-    Serial.printf("\nMessage contains ESP-Now channel: %d \n", *payload);
-#endif
-}
+
 
 void loop() {}
