@@ -1,9 +1,0 @@
-Change Component Footprint: Designator=R1 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R2 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R3 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R8 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R10_TS1 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R10_TS2 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R12_TS1 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Change Component Footprint: Designator=R12_TS2 Old Footprint=R1206_Simple-Assemble_shorted New Footprint=R1206_Simple-Assemble
-Added Member To Class: ClassName=main_master Member=Component LP? VLP-350-R
