@@ -279,7 +279,7 @@ void setup() {
 }
 
 void sendESPNOWmessage() {
-    //Enable SuperCap:
+    //Enable SuperCap to assist with power:
     digitalWrite(SUPERCAP_ENABLE, LOW);
 
     //Get the MAC address and channel from NVS:
@@ -290,8 +290,10 @@ void sendESPNOWmessage() {
         ESP_LOGE("READ-CHANNEL", "Error trying to read data from NVS: %s", esp_err_to_name(err));
     }
 
-    WiFi.mode(WIFI_STA); //this mode is required for ESP NOW, if you forget this the CPU will panic.
-    if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
+    //Enable Wi-Fi in station mode, to allow ESP-Now
+    WiFi.mode(WIFI_STA);
+
+    if (esp_now_init() != ESP_OK) { //if initing wasn't succesful, exit
 #if defined(DEBUG) & defined(DEBUG_ERRORS)
         Serial.println("Error initializing ESP-NOW");
 #endif
@@ -299,10 +301,12 @@ void sendESPNOWmessage() {
         WiFi.mode(WIFI_OFF);
         return;
     }
-    esp_now_register_send_cb(onDataSent); //register call back to fetch send reaction
+
+    esp_now_register_send_cb(onDataSent); //register callback to fetch send reaction
 
 #if defined(DEBUG)
-    Serial.println(" Now validating NVS address: ");
+//print the read channel and MAC address
+    Serial.print(" Now validating NVS address: ");
     for (uint8_t i = 0; i < 6;i++) {
         Serial.print(macAddress[i], HEX);
         Serial.print(':');
@@ -325,25 +329,29 @@ void sendESPNOWmessage() {
         return;
     }
 
+
     prepareMessage.numberofMeasurements = currentMeasurement;
     prepareMessage.index = burstNumber;
+    //Copy the temperature data into the struct
     memcpy(prepareMessage.pipeTemps1, temp1, MAX_SAMPLES_MEMORY * sizeof(temp1[0]));
     memcpy(prepareMessage.pipeTemps2, temp2, MAX_SAMPLES_MEMORY * sizeof(temp2[0]));
 #if defined(DEBUG_ESPNOW_SEND) & defined(DEBUG)
-    Serial.printf("[ESPNOW]: prepareMessage.numberofMeasurements = %u\n", prepareMessage.numberofMeasurements);
-    Serial.printf("[ESPNOW]: prepareMessage.intervalTime = %u\n", prepareMessage.intervalTime);
-    Serial.printf("[ESPNOW]: preparemessage.index = %u\n", prepareMessage.index);
-    for (uint8_t counter1 = 0; counter1 < prepareMessage.numberofMeasurements; counter1++) {
-        // printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1]); //Old float version
-        // printf("[ESPNOW]: prepareMessage.pipeTemps2[%u] = %f\n", counter1, prepareMessage.pipeTemps2[counter1]);
-        Serial.printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1] * 0.0078125f); //New int16_t, print as float for debugging
-        Serial.printf("[ESPNOW]: prepareMessage.pipeTemps2[%u] = %f\n", counter1, prepareMessage.pipeTemps2[counter1] * 0.0078125f);
-    }
-    Serial.printf("[ESPNOW]: This should be the message\n");
+    // Serial.printf("[ESPNOW]: prepareMessage.numberofMeasurements = %u\n", prepareMessage.numberofMeasurements);
+    // Serial.printf("[ESPNOW]: prepareMessage.intervalTime = %u\n", prepareMessage.intervalTime);
+    // Serial.printf("[ESPNOW]: preparemessage.index = %u\n", prepareMessage.index);
+    // for (uint8_t counter1 = 0; counter1 < prepareMessage.numberofMeasurements; counter1++) {
+    //     // printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1]); //Old float version
+    //     // printf("[ESPNOW]: prepareMessage.pipeTemps2[%u] = %f\n", counter1, prepareMessage.pipeTemps2[counter1]);
+    //     Serial.printf("[ESPNOW]: prepareMessage.pipeTemps1[%u] = %f\n", counter1, prepareMessage.pipeTemps1[counter1] * 0.0078125f); //New int16_t, print as float for debugging
+    //     Serial.printf("[ESPNOW]: prepareMessage.pipeTemps2[%u] = %f\n", counter1, prepareMessage.pipeTemps2[counter1] * 0.0078125f);
+    // }
+    // Serial.printf("[ESPNOW]: This should be the message\n");
 #endif
 
+    //Send the data through ESP-Now
     esp_err_t result = esp_now_send(macAddress, (uint8_t *)&prepareMessage, sizeof(prepareMessage));
 
+    //Check that the message was correctly transmitted 
     if (result != ESP_OK) {
 #if defined(DEBUG) & defined(DEBUG_ESPNOW_SEND)
         Serial.printf("Error sending the data, with return %u\n", result);
@@ -367,7 +375,7 @@ void sendESPNOWmessage() {
 #endif
 }
 
-//call back on ESP message sent
+//callback on ESP message sent, use status to check for ACK
 void onDataSent(const uint8_t *macAddress, esp_now_send_status_t status) {
 #if defined(DEBUG) & defined(DEBUG_CALLBACK)
     Serial.printf("[ESPNOW]: unregister cb: %d\n", esp_now_unregister_send_cb());
