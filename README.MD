@@ -1,33 +1,59 @@
-# Temperature monitor
-Firmware for ESP32 to read and parse data from
-* Two DS18B20 temperature sensors, this is boilerTemp variant
-* One SI7051 temperature sensor, this is roomTemp variant
+# Twomes Boiler Temperature Sensor
+Firmware for the Twomes "Digital Twins for the Heat-transition" Boiler temperature Sensor 
 
-send this measurements with ESPNOW to the gateway, this should be low power since this hardware is powered from a battery.
+## Table of contents
+* [General info](#general-info)
+* [Using binary releases](#using-binaries-releases)
+* [Developing with the source code ](#developing-with-the-source-code) 
+* [Features](#features)
+* [Status](#status)
+* [License](#license)
+* [Credits](#credits)
 
-## TODO's and considerations
-* ~~Read measurements from DS18B20~~
-* implement/merge compability with SI7051
-* ~~Implement ESPNOW for gateway communication~~
-* ~~Buffer measurements if ESPNOW messages are ignored~~
-* optimize ESPNOW message building/memory allocation
-* Add button functionality
-* Sync destination MAC by BLE
-* Remove debugging code
-* improve/review timing/ system states
-* improve low power performance
+## General info
+This firmware is designed to run on the ESP32 of the Twomes boiler Temperature Sensor hardware. This device has two DS18b20(Z) temperature sensors clamped to the water pipes leading into and coming out of the boiler for the central heating system.
+The ESP32 reads the temperatures measured by these devices every ten seconds, and stores them in the RTC memory section, where they are preserved while the ESP32 enters sleep mode.
+Once a series of 20 measurements have been taken the ESP32 will send the measurements to the Twomes P1-Gateway device using the Espressif ESP-Now protocol.
+
+## Using binary releases
+You can download and locally install the lastest installable version(s) via <link to the latest binary release(s) you published and describe to how people can install and run thise binaries; if needed describe this for different platforms>.
+
+## Developing with the source code 
+Describe how to use / adapt/ compile the souce code. 
+
+## Features
+List of features ready and TODOs for future development. 
+
+Ready:
+* Measure temperatures using two DS18b20 sensors
+* Sleep between conversions for ultra-low power consumption
+* Send data to a gateway device using ESP-Now
+
+To-do:
+* Implement Channel Provisioning via Gateway and save via NVS
+* Implement status- and error indicators using LEDs
+
+## Status
+Project is: in Progress.
+In its current state the software can properly read temperatures and send these via ESP-Now.
+There are still some missing features that need to be implemented, see [To-do](#features) for more info
+
+## License
+This software is available under the [Apache 2.0 license](./LICENSE.md), Copyright 2021 [Research group Energy Transition, Windesheim University of Applied Sciences](https://windesheim.nl/energietransitie) 
+
+## Credits
+This software is a collaborative effort the following students and researchers:
+* Fredrik-Otto Lautenbag ·  [@Fredrik1997](https://github.com/Fredrik1997)
+* Gerwin Buma ·  [@GerwinBuma](https://github.com/GerwinBuma) 
+* Werner Heetebrij ·  [@Werner-Heetebrij] (https://github.com/Werner-Heetebrij)
+* Sjors Smit ·  [@Shorts1999](https://github.com/Shorts1999)
 
 
+We use and gratefully aknowlegde the efforts of the makers of the following source code and libraries:
 
-## Dependencies
-```
-#include <Arduino.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <WiFi.h>
-#include <esp_now.h>
-#include <espnow_settings.h>
-```
+* [arduino-esp32](https://github.com/espressif/arduino-esp32), by Espressif, licensed under [GNU LGPL-2.1](https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md)
+* [OneWire.h](https://github.com/PaulStoffregen/OneWire), by Paul Stoffregen and others, licensed under [unknown](license2 URL)
+* [DallasTemperature.h](https://github.com/milesburton/Arduino-Temperature-Control-Library), by Miles Burton, licensed under [GNU LGPL-2.1](https://github.com/milesburton/Arduino-Temperature-Control-Library#license)
 
-## Header files for program settings
-The file espnow_setting.h.bak contain program enviroment variables. To use the simply remove .bak from the file name and fill in the correct values
+## Contact
+<not yet determined; which contact info to include here?>
