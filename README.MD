@@ -16,10 +16,14 @@ The ESP32 reads the temperatures measured by these devices every ten seconds, an
 Once a series of 20 measurements have been taken the ESP32 will send the measurements to the Twomes P1-Gateway device using the Espressif ESP-Now protocol.
 
 ## Using binary releases
-You can download and locally install the lastest installable version(s) via <link to the latest binary release(s) you published and describe to how people can install and run thise binaries; if needed describe this for different platforms>.
+Binary release not (yet) available
 
 ## Developing with the source code 
-Describe how to use / adapt/ compile the souce code. 
+Install [Visual Studio Code](https://code.visualstudio.com/) and the [PlatformIO](https://platformio.org/platformio-ide) plugin
+
+Download the sourcecode, unzip it, and open the folder in Visual Studio Code.
+Modify the sourcecode to fit your needs. Connect your board, and press the arrow on the blue bar on the bottom left to compile and upload your code
+
 
 ## Features
 List of features ready and TODOs for future development. 
