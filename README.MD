@@ -32,10 +32,10 @@ Ready:
 * Measure temperatures using two DS18b20 sensors
 * Sleep between conversions for ultra-low power consumption
 * Send data to a gateway device using ESP-Now
+* Channel Provisioning via Gateway and save via NVS
 
 To-do:
-* Implement Channel Provisioning via Gateway and save via NVS
-* Implement status- and error indicators using LEDs
+* Implement more status- and error indicators using LEDs
 
 ## Status
 Project is: in Progress.
