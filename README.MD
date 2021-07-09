@@ -50,7 +50,7 @@ This software is a collaborative effort of:
 * Sjors Smit ·  [@Shorts1999](https://github.com/Shorts1999)
 * Fredrik-Otto Lautenbag ·  [@Fredrik1997](https://github.com/Fredrik1997)
 * Gerwin Buma ·  [@GerwinBuma](https://github.com/GerwinBuma) 
-* Werner Heetebrij ·  [@Werner-Heetebrij] (https://github.com/Werner-Heetebrij)
+* Werner Heetebrij ·  [@Werner-Heetebrij](https://github.com/Werner-Heetebrij)
 
 Product owner:
 * Marco Winkelman · [@MarcoW71](https://github.com/MarcoW71)
