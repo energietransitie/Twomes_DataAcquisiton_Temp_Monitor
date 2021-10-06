@@ -265,7 +265,7 @@ void setup() {
                     digitalWrite(LED_STATUS, HIGH);
                     vTaskDelay(500);
                     digitalWrite(LED_STATUS, LOW);
-                    delay(500);
+                    vTaskDelay(500);
                 }
                 esp_now_unregister_recv_cb();
                 esp_now_deinit();
