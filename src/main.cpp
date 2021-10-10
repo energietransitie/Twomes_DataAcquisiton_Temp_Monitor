@@ -40,6 +40,8 @@
 #define TIME_TO_CONVERSION 1                         /* Time ESP32 will go to sleep for conversion(in seconds) */
 #define RETRY_INTERVAL 5                             /* Amount of measurements before a new ESP-Now attempt after a Fail To Send */
 
+#define PAIRING_TIMEOUT_uS 20*uS_TO_S_FACTOR        /* timeout for pairing mode*/
+
 #define MAX_SAMPLES_MEMORY 60    //maximum memory allocated for samples, derived from maximum amount of samples that fit into a single message
 #define ESPNOW_SEND_MINIMUM 20       //Minimum amount of measurements taken before ESP-Now transmissions are started
 
@@ -234,7 +236,7 @@ void setup() {
 #ifdef DEBUG
                 Serial.println("Entering Sleep mode");
 #endif
-#if (TIME_TO_SLEEP>10)
+#if (TIME_TO_SLEEP>10)  //at a delay of more than 10 
                 esp_deep_sleep_start();
 #else
                 esp_light_sleep_start(); //go to sleep
@@ -257,12 +259,13 @@ void setup() {
                 esp_wifi_set_channel(ESPNOW_PAIRING_CHANNEL, WIFI_SECOND_CHAN_NONE);
 
                 esp_now_register_recv_cb(onDataReceive);
-                //press Button1 to break out of provisioning loop if provisioning is not working/needed:
-                while (digitalRead(BUTTON_P1)) {
-#if defined(DEBUG) & defined(DEBUG_PROVISIONING)
-                    Serial.println("Watining for ESP-Now message");
-                    delay(1000);
-#endif
+                int64_t startTime = esp_timer_get_time();
+                //Set 20 second timeout on pairing:
+                while ((startTime + PAIRING_TIMEOUT_uS > esp_timer_get_time())) {
+                    digitalWrite(LED_STATUS, HIGH);
+                    vTaskDelay(500);
+                    digitalWrite(LED_STATUS, LOW);
+                    vTaskDelay(500);
                 }
                 esp_now_unregister_recv_cb();
                 esp_now_deinit();

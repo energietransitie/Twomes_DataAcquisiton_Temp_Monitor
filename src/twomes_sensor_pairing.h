@@ -61,8 +61,8 @@ void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length
         uint8_t blinkArgs[2] = { 3, LED_STATUS };
         xTaskCreatePinnedToCore(blink, "ChRecvBlink", 768, (void *)blinkArgs, 5, NULL, 1); //Blink LED to indicate receive of data
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-        esp_restart(); //restart the device after pairing
     }
+    esp_restart(); //restart the device after pairing
 }
 
 
