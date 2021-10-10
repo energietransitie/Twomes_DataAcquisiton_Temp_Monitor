@@ -1,0 +1,43 @@
+This bootloader has optimizations from:
+https://hackaday.io/project/174898-esp-now-weather-station/log/183782-bootloader-wake-time-improvements
+
+
+In menuconfig, under "Bootloader Config", I enabled "Skip Image Validation when waking from Deep Sleep" (which I think made the most difference), set the compiler optimization to -O2 for speed, and turned off all logging. Under the "Serial Flasher Config", I set the mode to QIO and speed to 80MHz, and under "Component Config" I set log output to None. Build the project and you end up with a bootloader.bin in the project_folder/.pio/build/esp32dev directory.
+
+To get this bootloader into an Arduino Framework project, you first must understand how Platformio (and probably the Arduino IDE as well) find a bootloader to load into your ESP32. Normally a group of prebuilt bootloaders are found under $HOME/.platformio/packages/framework-arduinoespressif32/tools/sdk/bin, and they are named with the convention bootloader_mode_flashspeed.bin, so with the configuration of mode=qio and flash speed=80MHz, the targeted bootloader is bootloader_qio_80m.bin.
+
+Now you could copy the newly compiled bootloader.bin to the folder under the home directory, but these bootloaders are shared by all PlatformIO projects, and I didn't want to screw up some other project. You can create a private copy of the packages directory with the following directive in platformio.ini:
+
+[platformio]
+packages_dir=./packages_dir
+This way you can copy the new bootloader.bin to project_dir/ packages_dir/framework-arduinoespressif32/tools/sdk/bin/bootloader_qio_80m.bin, and the next time the ESP32 is flashed, it will get the new bootloader.
+
+
+contents platformio.ini
+
+; PlatformIO Project Configuration File
+;
+;   Build options: build flags, source filter
+;   Upload options: custom upload port, speed and extra flags
+;   Library options: dependencies, extra library storages
+;   Advanced options: extra scripting
+;
+; Please visit documentation for the other options and examples
+; https://docs.platformio.org/page/projectconf.html
+
+[env:esp32dev]
+;Device and Platform settings:
+platform = espressif32@3.2.0
+board = esp32dev
+board_build.flash_mode = qio
+board_build.f_flash = 80000000L
+board_build.f_cpu = 80000000L
+framework = arduino
+monitor_speed = 115200
+lib_deps = 
+	paulstoffregen/OneWire@^2.3.5
+	milesburton/DallasTemperature@^3.9.1
+; monitor_port = COM6
+
+[platformio]
+packages_dir=./packages_dir     ; put custom bootloader_qio_80m.bin in project_dir/ packages_dir/framework-arduinoespressif32/tools/sdk/bin/

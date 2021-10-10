@@ -35,9 +35,10 @@
 #define SUPERCAP_ENABLE 27  //Pull low to enable supercap
 
 #define uS_TO_S_FACTOR 1000000ULL                    /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP 10                             /* Time between measurements */
+#define mS_TO_S_FACTOR 1000ULL                       /* Conversion factor for milli seconds to seconds */
+#define TIME_TO_SLEEP 20                             /* Time between measurements */
 #define INTERVAL_US (TIME_TO_SLEEP * uS_TO_S_FACTOR) /* desired interval between measurements in us */
-#define TIME_TO_CONVERSION 1                         /* Time ESP32 will go to sleep for conversion(in seconds) */
+#define TIME_TO_CONVERSION 750                         /* Time ESP32 will go to sleep for conversion(in milliseconds) */
 #define RETRY_INTERVAL 5                             /* Amount of measurements before a new ESP-Now attempt after a Fail To Send */
 
 #define PAIRING_TIMEOUT_uS 20*uS_TO_S_FACTOR        /* timeout for pairing mode*/
@@ -153,21 +154,21 @@ void setup() {
                 tempSensors.begin();                     //initialize sensor
                 tempSensors.setWaitForConversion(false); //disable the wait for conversion
                 tempSensors.requestTemperatures();       //start conversion
-                esp_sleep_enable_timer_wakeup(TIME_TO_CONVERSION * uS_TO_S_FACTOR); //sleep for 1 second during conversion
+                esp_sleep_enable_timer_wakeup(TIME_TO_CONVERSION * mS_TO_S_FACTOR); //sleep for 750 ms during conversion
 
                 systemState = systemStates::READ_MEASUREMENT; //set conversion is started bit
-#if (TIME_TO_SLEEP>10)
-                esp_deep_sleep_start();
-#else
+//#if (TIME_TO_SLEEP>10)
+//                esp_deep_sleep_start();
+//#else
                 esp_light_sleep_start(); //go to sleep
-#endif
+//#endif
                 break; //end of systemStates::INIT_MEASUREMENT
             case systemStates::READ_MEASUREMENT: //read measurements
             {
 #if defined(DEBUG) & defined(DEBUG_BOOT)
                 Serial.println("Device has started");
 #endif
-                tempSensors.begin(); //initialize again to find the device adress of the sensor
+             //   tempSensors.begin(); //initialize again to find the device adress of the sensor (not needed after light sleep)
                 //Theoretically speaking, currentMeasurement should in this case always be equal to MAX_SAMPLES_MEMORY, and never exceed it.
                 if (currentMeasurement >= MAX_SAMPLES_MEMORY) {
                     //move all samples "RETRY_INTERVAL" amount of spaces in memory, overwriting "RETRY_INTERVAL" amount of old measurements and making room for "RETRY_INTERVAL" amount new ones.
