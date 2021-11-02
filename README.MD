@@ -3,9 +3,10 @@ Firmware for the Twomes Temperature Monitor measurement device
 
 ## Table of contents
 * [General info](#general-info)
-* [Using binary releases](#using-binaries-releases)
+* [Using binary releases](#using-binary-releases)
 * [Developing with the source code ](#developing-with-the-source-code) 
 * [Features](#features)
+* [Pairing](#pairing)
 * [Status](#status)
 * [License](#license)
 * [Credits](#credits)
@@ -42,7 +43,6 @@ Install [Visual Studio Code](https://code.visualstudio.com/) and the [PlatformIO
 Download the sourcecode, unzip it, and open the folder in Visual Studio Code.
 Modify the sourcecode to fit your needs. Connect your board, and press the arrow on the blue bar on the bottom left to compile and upload your code
 
-
 ## Features
 List of features ready and TODOs for future development. 
 
@@ -54,6 +54,14 @@ Ready:
 
 To-do:
 * Implement more status- and error indicators using LEDs
+
+## Pairing
+The boiler monitor will send the measurements to the Twomes P1-Gateway device using the Espressif ESP-NOW protocol. The P1-Gateway listens on a specific 2.4 GHz WiFi channel, that is chosen after the provisioning of the P1-Gateway. To let the boiler monitor know on which channel the P1-Gateway expects the measurements, use the following procedure (provisioning of the ESP_NOW channel):
+* Place the battery in the boiler monitor, make sure it is near the P1-Gateway to be able to see whether the provisioning is successful.
+* On the boiler monitor, press and hold the GPIO15 (SW2) "K" button and Reset (SW1) "R" button, and release the Reset button first, and after that the "K" button. The green led will blink for 20 seconds to indicate that the boiler monitor listens (on WiFi channel 0) for the ESP_NOW channel information from the P1-Gateway.
+* On the P1-Gateway, within these 20 seconds, press the GPIO12 (SW2) "K" button. The P1-Gateway now transmits on channel 0 the information about which WiFi channel it expects the ESP_NOW messages, the green led blinks shortly during this transmission.
+* On the boiler monitor, when the channel provisioning is successful, the green led will blink and after that the red led.
+* This procedure can be repeated if needed, e.g. after renewed provisioning of the P1-Gateway.
 
 ## Status
 Project is: in Progress.
