@@ -66,7 +66,7 @@ List of features ready and TODOs for future development.
 Ready:
 * Pairing with a [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware)
 * Measure temperatures using two DS18b20 sensors
-* Sleep between conversions for ultra-low power consumption
+* Deep sleep between data acquisition for ultra-low power consumption
 * Send measurement data to [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using ESP-NOW
 
 To-do:
