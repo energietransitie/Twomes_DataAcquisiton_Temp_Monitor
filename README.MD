@@ -56,7 +56,7 @@ Please see the [developing section of the generig Twomes firmware](https://githu
 List of features ready and TODOs for future development. 
 
 Ready:
-* Pairing with [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware)
+* Pairing with a [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware)
 * Measure temperatures using two DS18b20 sensors
 * Sleep between conversions for ultra-low power consumption
 * Send measurement data to [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using ESP-NOW
@@ -65,12 +65,7 @@ To-do:
 * Implement more status- and error indicators using LEDs
 
 ## Pairing
-The boiler monitor will send the measurements to a [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using the ESP-NOW protocol. The P1 Gateway listens on a specific 2.4 GHz channel, that is chosen after the provisioning of the P1 Gateway. To let the boiler monitor know on which channel the P1 Gateway expects the measurements, use the following procedure (provisioning of the ESP_NOW channel):
-* Place the battery in the boiler monitor, make sure it is near the P1 Gateway to be able to see whether the provisioning is successful.
-* On the boiler monitor, press and hold the `GPIO15 (SW2)` button (labeled `K` on the enclosure, which stands for the Dutch word "Koppelen") and then briefly press the `RESET (SW1)` button (labeled `R` on the enclosure), `GPIO15 (SW2) for about second, until the green LED turns on; then release the button. The green led will blink for 20 seconds to indicate that the boiler monitor listens (on 2.4 GHz channel 0) for the ESP_NOW channel information from the P1 Gateway.
-* On the P1 Gateway, within these 20 seconds, press the `GPIO12 (SW2)` (labeled `K` on the enclosure, which stands for the Dutch word "Koppelen"). The P1 Gateway now transmits on channel 0 the information about which 2.4 GHz channel it expects the ESP-NOW messages, the green led blinks shortly during this transmission.
-* On the boiler monitor, when the channel provisioning is successful, the green led will blink and after that the red led.
-* This procedure can be repeated if needed, e.g. after renewed provisioning of the P1 Gateway.
+After installation in the home, the Twomes Boiler Monitor Module should be [paired as a satellite to the Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware/blob/main/README.md#pairing-satellites).
 
 ## Status
 Project is: in Progress.
