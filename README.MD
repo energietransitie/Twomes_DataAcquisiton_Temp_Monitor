@@ -1,10 +1,10 @@
-# Twomes Temperature Monitor Firmware
-Firmware for the Twomes Temperature Monitor measurement device 
+# Twomes Boiler Monitor Module Firmware
+Firmware for the Twomes Boiler Monitor Module. 
 
 ## Table of contents
 * [General info](#general-info)
-* [Using binary releases](#using-binary-releases)
-* [Developing with the source code ](#developing-with-the-source-code) 
+* [Deploying](#deploying)
+* [Developing](#developing) 
 * [Features](#features)
 * [Pairing](#pairing)
 * [Status](#status)
@@ -18,7 +18,7 @@ Once a series of 20 measurements have been taken the ESP32 will send the measure
 
 For the associated hardware design files for the Twomes Temperature Monitor PCB and enclosure and tips and instructions how to produce and assemble the hardware, please see the [twomes-temp-monitor-hardware](https://github.com/energietransitie/twomes-temp-monitor-hardware) repository. 
 
-## Using binary releases
+## Deploying
 ### Prerequisites
 *	a USB to Serial programmer (FTDI, CP210x, etc..);
 *	a PC with a USB port;
@@ -37,7 +37,7 @@ For the associated hardware design files for the Twomes Temperature Monitor PCB 
 * When the upload is finished, view the serial output with a serial monitor tool like Putty or the utility of your IDE (115200 baud). Press reset and make sure the firmware boots: 
 * When temperature sensors are connected, you will see measurements with an interval of 10 seconds. Remove the battery when you do not have plans to pair the boiler monitor with a P1 gateway rightaway: Otherwise, the boiler monitor ESP_NOW messages to the gateway will fail and the retransmissions will cause more drain of the battery, also when the temperature sensors are not connected, there is a higher power consumption. 
 
-## Developing with the source code 
+## Developing 
 Install [Visual Studio Code](https://code.visualstudio.com/) and the [PlatformIO](https://platformio.org/platformio-ide) plugin
 
 Download the sourcecode, unzip it, and open the folder in Visual Studio Code.
