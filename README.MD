@@ -12,11 +12,20 @@ Firmware for the Twomes Boiler Monitor Module.
 * [Credits](#credits)
 
 ## General info
-This firmware is designed to run on the ESP32 of the Twomes Temperature Monitor hardware. This device has two DS18b20(Z) temperature sensors clamped to the water pipes leading into and coming out of the boiler for the central heating system.
-The ESP32 reads the temperatures measured by these devices every ten seconds, and stores them in the RTC memory section, where they are preserved while the ESP32 enters sleep mode.
-Once a series of 20 measurements have been taken the ESP32 will send the measurements to the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using the ESP-NOW protocol.
+This firmware is designed to run on the ESP32 of the [Twomes Temperature Monitor hardware](https://github.com/energietransitie/twomes-temp-monitor-hardware), in combination with two DS18b20(Z) temperature sensors in clamps that can be connected the supply water piple (from the boiler to the hydronic radiators) and return water pipes returning from the hydronic radiators to the boiler. We do not expect the end user of the device to be able to distinguish between supply and return water pipes and leave the determination of supply and return to the analysis phase of the data.
 
-For the associated hardware design files for the Twomes Temperature Monitor module hardware and enclosure and tips and instructions how to produce and assemble the hardware, please see the [twomes-temp-monitor-hardware](https://github.com/energietransitie/twomes-temp-monitor-hardware) repository. 
+The ESP32 reads the temperatures from both sensors and stores them in [RTC fast memory](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#rtc-fast-memory), to preserve them during the deep sleep interval between brief moments when the ESP32 needs to be awake for data acquisition. After a series of 20 measurements at fixed time intervals, the ESP32 will send the series of measurements to the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using the ESP-NOW protocol.
+
+Via the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware), the Twomes Boiler Monitor Module sends the following properties to the Twomes server:
+| Sensor  | Property           | Unit | Data type  | Format | Interval [h:mm:ss]| Description                            |
+|---------|--------------------|------|------------|--------|-------------------|----------------------------------------|
+| DS18b20 | `boilerTemp1`      | °C   | float      | f.1    | 0:00:10           | pipe temperature                       |
+| DS18b20 | `boilerTemp2`      | °C   | float      | f.1    | 0:00:10           | pipe temperature                       |
+
+
+
+## Pairing
+After [deploying](#deploying) and installation in the home, the Twomes Boiler Monitor Module should be [paired as a satellite to the Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware/blob/main/README.md#pairing-satellites).
 
 ## Deploying
 This section describes how you can deploy binary releases of the firmware, i.e. without changing the source code, without a development environment and without needing to compile the source code.
@@ -28,7 +37,6 @@ To deploy the firmware, in addition to the [generic prerequisites for deploying 
 * Find a row of 6 holes holes (J1 in the corner of the PCB of the Boiler Monitor Module), find the `GND` pin (see  bottom of the PCB), alighn the 6 pins of the serial port adapter such that `GND` and other pins match; then connect the serial port adapter to your computer and connect the 6 pins of the serial port adapter to the 6 holes on the PCB.
 
 ### Uploading firmware
-
 * Download the [binary release for your device](https://github.com/energietransitie/twomes-p1-boiler-monitor-firmware/releases) and extract it to a directory of your choice.
 * If you used the device before, you shoud first [erase all persistenly stored data](#erasing-all-persistenly-stored-data).
 * Open a comand prompt in that directory, change the directory to the binaries subfolder and enter (**N.B. this command differs from the deployment command of the generic firmware**):
@@ -42,8 +50,8 @@ To deploy the firmware, in addition to the [generic prerequisites for deploying 
 	py -m esptool --chip esp32 --port "COM?" --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 bootloader.bin 0x9000 partitions.bin 0xe000 ota_data_initial.bin 0x10000 firmware.bin```
 * When you see the beginning of the sequence `conecting ......_____......`, press and hold the button labeled `GPIO0 (SW2)` on the PCB, then briefly press the button labeled `RESET (SW1)` shortly. 
 * You should see an indication that the firmware is being written to the device.
-* When the upload is finished, view the serial output with a serial monitor tool like PuTTY or the utility of your IDE (115200 baud). Press reset and make sure the firmware boots: 
-* When temperature sensors are connected, you will see measurements with an interval of 10 seconds. Remove the battery when you do not have plans to pair the boiler monitor with a P1 gateway rightaway. Otherwise, the boiler monitor ESP-NOW messages to the P1 Gateway will fail and the retransmissions will cause more drain of the battery, also when the temperature sensors are not connected, there is a higher power consumption. 
+* When the upload is finished, view the serial output with a serial monitor tool like PuTTY or the utility of your IDE (115200 baud). Press reset and make sure the firmware boots. 
+* Remove the battery or insert a battery insulating pull tab when you do not plan to use the boiler monitor module immediately, to prevent unnecessary battery drain. In particular, when the temperature sensors are not connected, power consumption is higher. 
 
 ## Developing 
 This section describes how you can change the source code using a development environment and compile the source code into a binary release of the firmware that can be depoyed, either via the development environment, or via the method described in the section [Deploying](#deploying).
@@ -63,9 +71,6 @@ Ready:
 
 To-do:
 * Implement more status- and error indicators using LEDs
-
-## Pairing
-After installation in the home, the Twomes Boiler Monitor Module should be [paired as a satellite to the Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware/blob/main/README.md#pairing-satellites).
 
 ## Status
 Project is: in Progress.
