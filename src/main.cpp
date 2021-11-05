@@ -116,6 +116,7 @@ void setup() {
 
     //Check for P2 (GPIO15) pressed on boot
     if (reset_reason == POWERON_RESET) {
+        delay(10000);   //Delay to give supercap time to charge up
         systemState = systemStates::PROVISION_SENSOR;
     } //if(!digitalRead(BUTTON_P2))
 
