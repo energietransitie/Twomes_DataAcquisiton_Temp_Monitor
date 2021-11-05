@@ -113,7 +113,7 @@ void setup() {
 
     //Get the wakeup reason:
     RESET_REASON reset_reason = rtc_get_reset_reason(PRO_CPU_NUM);
-    if (reset_reason = RTCWDT_BROWN_OUT_RESET) {
+    if (reset_reason == RTCWDT_BROWN_OUT_RESET) {
         delay(10000);
         reset_reason = POWERON_RESET;
     }
