@@ -8,6 +8,7 @@
 #include <twomes_sensor_pairing.h>
 #include <esp_wifi.h>           //For setting channel
 #include <nvs.h>                //For storing and reading Gateway MAC and channel
+#include <rom/rtc.h>            //Get wakeup reason
 
 //DEBUG DEFINES:
 #define DEBUG 1              //Global debug define enable
@@ -109,8 +110,12 @@ void setup() {
     pinMode(LED_ERROR, OUTPUT);
     pinMode(SUPERCAP_ENABLE, OUTPUT);
     digitalWrite(SUPERCAP_ENABLE, HIGH); //Pmos = active low
+
+    //Get the wakeup reason:
+    RESET_REASON reset_reason = rtc_get_reset_reason(PRO_CPU_NUM);
+
     //Check for P2 (GPIO15) pressed on boot
-    if (!digitalRead(BUTTON_P2)) {
+    if (reset_reason == POWERON_RESET) {
         systemState = systemStates::PROVISION_SENSOR;
     } //if(!digitalRead(BUTTON_P2))
 
@@ -244,6 +249,7 @@ void setup() {
 
             case systemStates::PROVISION_SENSOR:
             {
+                Serial.println("In pairing mode");
                 digitalWrite(SUPERCAP_ENABLE, LOW); //Enable supercap
                 WiFi.mode(WIFI_STA); //Enter STA mode to enable ESP-Now
                 if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
