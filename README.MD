@@ -34,11 +34,11 @@ This section describes how you can deploy binary releases of the firmware, i.e. 
 To deploy the firmware, in addition to the [generic prerequisites for deploying Twomes firmware](https://github.com/energietransitie/twomes-generic-esp-firmware#prerequisites), you need:
 * a 3.3V TTL-USB Serial Port Adapter (e.g. [FT232RL](https://www.tinytronics.nl/shop/en/communication-and-signals/usb/ft232rl-3.3v-5v-ttl-usb-serial-port-adapter), CP210x, etc..), including the cable to connect ths adapter to a free USB port on your computer (a USB to miniUSB cable in the case of a [FT232RL](https://www.tinytronics.nl/shop/en/communication-and-signals/usb/ft232rl-3.3v-5v-ttl-usb-serial-port-adapter));
 * You need to place a 3.6V Lithium AA-battery (e.g. SAFT LS14500) in its holder to power the board, as the Twomes Boiler Monitor Module is not powered via the 6 pin programming connector.
-* Find a row of 6 holes holes (J1 in the corner of the PCB of the Boiler Monitor Module), find the `GND` pin (see  bottom of the PCB), alighn the 6 pins of the serial port adapter such that `GND` and other pins match; then connect the serial port adapter to your computer and connect the 6 pins of the serial port adapter to the 6 holes on the PCB.
+* Find a row of 6 holes holes (J1 in the corner of the PCB of the Boiler Monitor Module), find the `GND` pin (see  top of the PCB), align the 6 pins of the serial port adapter such that `GND` and other pins match; then connect the serial port adapter to your computer and connect the 6 pins of the serial port adapter to the 6 holes on the PCB.
 
 ### Uploading firmware
 * Download the [binary release for your device](https://github.com/energietransitie/twomes-boiler-monitor-firmware/releases) and extract it to a directory of your choice.
-* If you used the device before, you shoud first [erase all persistenly stored data](#erasing-all-persistenly-stored-data).
+* If you used the device before, you should first [erase all persistently stored data](#erasing-all-persistenly-stored-data).
 * Open a comand prompt in that directory, change the directory to the binaries subfolder and enter (**N.B. this command differs from the deployment command of the generic firmware**):
 	```shell
 	py -m esptool --chip esp32 --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 bootloader.bin 0x9000 partitions.bin 0xe000 boot_app0.bin 0x10000 firmware.bin  
@@ -48,7 +48,7 @@ To deploy the firmware, in addition to the [generic prerequisites for deploying 
 * If the COM port is not automatically detected, then enter (while replacing `?` with the digit found in the previous step) (**N.B. this command differs from the deployment command of the generic firmware**): 
 	```shell
 	py -m esptool --chip esp32 --port "COM?" --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 bootloader.bin 0x9000 partitions.bin 0xe000 boot_app0.bin 0x10000 firmware.bin```
-* When you see the beginning of the sequence `conecting ......_____......`, press and hold the button labeled `GPIO0 (SW2)` on the PCB, then briefly press the button labeled `RESET (SW1)` shortly. 
+* When you see the beginning of the sequence `conecting ......_____......`, press and hold the button labeled `GPIO0 (SW2)` on the PCB, then briefly press the button labeled `RESET (SW1)`. 
 * You should see an indication that the firmware is being written to the device.
 * When the upload is finished, view the serial output with a serial monitor tool like PuTTY or the utility of your IDE (115200 baud). Press reset and make sure the firmware boots. 
 * Remove the battery or insert a battery insulating pull tab when you do not plan to use the boiler monitor module immediately, to prevent unnecessary battery drain. In particular, when the temperature sensors are not connected, power consumption is higher. 
