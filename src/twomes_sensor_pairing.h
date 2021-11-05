@@ -8,6 +8,7 @@
 #include <esp_now.h>
 #include <sensor_IO.h>
 
+
 #define ESPNOW_PAIRING_CHANNEL 1
 
 const char *TAG = "ESPNOW_PAIRING";
@@ -58,9 +59,8 @@ void onDataReceive(const uint8_t *macAddress, const uint8_t *payload, int length
         nvs_set_blob(gatewayHandle, "MAC", macAddress, 6);
         nvs_set_u8(gatewayHandle, "channel", *payload);
 
-        uint8_t blinkArgs[2] = { 20, LED_STATUS };
-        xTaskCreatePinnedToCore(blink, "ChRecvBlink", 768, (void *)blinkArgs, 5, NULL, 1); //Blink LED to indicate receive of data
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        gpio_set_level((gpio_num_t)LED_STATUS, 1);
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
     esp_restart(); //restart the device after pairing
 }

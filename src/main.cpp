@@ -113,10 +113,12 @@ void setup() {
 
     //Get the wakeup reason:
     RESET_REASON reset_reason = rtc_get_reset_reason(PRO_CPU_NUM);
-
+    if (reset_reason = RTCWDT_BROWN_OUT_RESET) {
+        delay(10000);
+        reset_reason = POWERON_RESET;
+    }
     //Check for P2 (GPIO15) pressed on boot
     if (reset_reason == POWERON_RESET) {
-        delay(10000);   //Delay to give supercap time to charge up
         systemState = systemStates::PROVISION_SENSOR;
     } //if(!digitalRead(BUTTON_P2))
 
@@ -277,6 +279,9 @@ void setup() {
                 esp_now_deinit();
                 WiFi.mode(WIFI_OFF);
                 digitalWrite(SUPERCAP_ENABLE, HIGH); //Close supercap
+                //Indicate pair fail:
+                gpio_set_level((gpio_num_t)LED_ERROR, 1);
+                delay(5000);
                 systemState = systemStates::UNKNOWN;
             }//case PROVISION_SENSOR
             break;
