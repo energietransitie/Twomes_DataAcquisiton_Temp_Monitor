@@ -8,6 +8,7 @@
 #include <twomes_sensor_pairing.h>
 #include <esp_wifi.h>           //For setting channel
 #include <nvs.h>                //For storing and reading Gateway MAC and channel
+#include <rom/rtc.h>            //Get wakeup reason
 
 //DEBUG DEFINES:
 #define DEBUG 1              //Global debug define enable
@@ -38,10 +39,10 @@
 #define mS_TO_S_FACTOR 1000ULL                       /* Conversion factor for milli seconds to seconds */
 #define TIME_TO_SLEEP 10                             /* Time between measurements */
 #define INTERVAL_US (TIME_TO_SLEEP * uS_TO_S_FACTOR) /* desired interval between measurements in us */
-#define TIME_TO_CONVERSION 750                         /* Time ESP32 will go to sleep for conversion(in milliseconds) */
+#define TIME_TO_CONVERSION 750                       /* Time ESP32 will go to sleep for conversion(in milliseconds) */
 #define RETRY_INTERVAL 5                             /* Amount of measurements before a new ESP-Now attempt after a Fail To Send */
 
-#define PAIRING_TIMEOUT_uS 20*uS_TO_S_FACTOR        /* timeout for pairing mode*/
+#define PAIRING_TIMEOUT_uS 20*uS_TO_S_FACTOR         /* timeout for pairing mode*/
 
 #define MAX_SAMPLES_MEMORY 60    //maximum memory allocated for samples, derived from maximum amount of samples that fit into a single message
 #define ESPNOW_SEND_MINIMUM 20       //Minimum amount of measurements taken before ESP-Now transmissions are started
@@ -103,16 +104,23 @@ void setup() {
 #if defined(DEBUG) //Serial only has to be started when debugging:
     Serial.begin(115200);
 #endif
-    pinMode(BUTTON_P1, INPUT_PULLUP);
-    pinMode(BUTTON_P2, INPUT_PULLUP);
-    pinMode(LED_STATUS, OUTPUT);
-    pinMode(LED_ERROR, OUTPUT);
+    pinMode(BUTTON_GPIO0_SW2, INPUT_PULLUP);
+    pinMode(BUTTON_GPIO15_SW3, INPUT_PULLUP);
+    pinMode(GREEN_LED_STATUS_D2, OUTPUT);
+    pinMode(RED_LED_ERROR_D1, OUTPUT);
     pinMode(SUPERCAP_ENABLE, OUTPUT);
     digitalWrite(SUPERCAP_ENABLE, HIGH); //Pmos = active low
-    //Check for P2 (GPIO15) pressed on boot
-    if (!digitalRead(BUTTON_P2)) {
+
+    //Get the wakeup reason:
+    RESET_REASON reset_reason = rtc_get_reset_reason(PRO_CPU_NUM);
+    if (reset_reason == RTCWDT_BROWN_OUT_RESET) {
+        delay(10000);
+        reset_reason = POWERON_RESET;
+    }
+    //Check for BUTTON_GPIO15_SW3 pressed on boot
+    if (reset_reason == POWERON_RESET) {
         systemState = systemStates::PROVISION_SENSOR;
-    } //if(!digitalRead(BUTTON_P2))
+    } //if(!digitalRead(BUTTON_GPIO15_SW3))
 
     //Needs loop for lightsleep, since program counter is saved
     while (1) {
@@ -121,14 +129,14 @@ void setup() {
             //First boot or power loss, re-initialise:
             case systemStates::UNKNOWN: //first run/sensors not connected?, this could be detection for hardware variant
 #if defined(DEBUG) & defined(DEBUG_BOOT)
-//Blink LED to indicat being in state "UNKNOWN"
-                digitalWrite(LED_ERROR, HIGH);
+//Blink LED to indicate being in state "UNKNOWN"
+                digitalWrite(RED_LED_ERROR_D1, HIGH);
                 delay(50);
-                digitalWrite(LED_ERROR, LOW);
+                digitalWrite(RED_LED_ERROR_D1, LOW);
                 delay(50);
-                digitalWrite(LED_ERROR, HIGH);
+                digitalWrite(RED_LED_ERROR_D1, HIGH);
                 delay(50);
-                digitalWrite(LED_ERROR, LOW);
+                digitalWrite(RED_LED_ERROR_D1, LOW);
                 Serial.println("Device has started");
                 Serial.println("booted for the first time");
 #endif
@@ -244,6 +252,7 @@ void setup() {
 
             case systemStates::PROVISION_SENSOR:
             {
+                Serial.println("In pairing mode");
                 digitalWrite(SUPERCAP_ENABLE, LOW); //Enable supercap
                 WiFi.mode(WIFI_STA); //Enter STA mode to enable ESP-Now
                 if (esp_now_init() != ESP_OK) { //if initing wasn't succesful
@@ -261,15 +270,18 @@ void setup() {
                 int64_t startTime = esp_timer_get_time();
                 //Set 20 second timeout on pairing:
                 while ((startTime + PAIRING_TIMEOUT_uS > esp_timer_get_time())) {
-                    digitalWrite(LED_STATUS, HIGH);
+                    digitalWrite(GREEN_LED_STATUS_D2, HIGH);
                     vTaskDelay(500);
-                    digitalWrite(LED_STATUS, LOW);
+                    digitalWrite(GREEN_LED_STATUS_D2, LOW);
                     vTaskDelay(500);
                 }
                 esp_now_unregister_recv_cb();
                 esp_now_deinit();
                 WiFi.mode(WIFI_OFF);
                 digitalWrite(SUPERCAP_ENABLE, HIGH); //Close supercap
+                //Indicate pair fail:
+                gpio_set_level((gpio_num_t)RED_LED_ERROR_D1, 1);
+                delay(5000);
                 systemState = systemStates::UNKNOWN;
             }//case PROVISION_SENSOR
             break;
