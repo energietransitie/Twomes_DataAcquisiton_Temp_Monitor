@@ -129,7 +129,7 @@ void setup() {
             //First boot or power loss, re-initialise:
             case systemStates::UNKNOWN: //first run/sensors not connected?, this could be detection for hardware variant
 #if defined(DEBUG) & defined(DEBUG_BOOT)
-//Blink LED to indicat being in state "UNKNOWN"
+//Blink LED to indicate being in state "UNKNOWN"
                 digitalWrite(RED_LED_ERROR_D1, HIGH);
                 delay(50);
                 digitalWrite(RED_LED_ERROR_D1, LOW);
