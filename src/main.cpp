@@ -1,14 +1,23 @@
 #include <Arduino.h>
-#include <sensor_IO.h>
 #include <OneWire.h>           //for DS18B20 support
 #include <DallasTemperature.h> //for DS18B20 support
 #include <WiFi.h>               //For setting WiFi mode REVIEW could this be done using the esp_wifi.h as well?
 #include <esp_now.h>            //For sending and receiving ESP-NOW messages
 #include <espnow_settings.h>    //Contains addresses and message limits
-#include <twomes_sensor_pairing.h>
 #include <esp_wifi.h>           //For setting channel
 #include <nvs.h>                //For storing and reading Gateway MAC and channel
 #include <rom/rtc.h>            //Get wakeup reason
+
+//Roomsensor libraries are made in C:
+//Should the extern "C" be moved to inside the libraries?
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include <sensor_IO.h>
+#include <twomes_sensor_pairing.h>
+#ifdef __cplusplus
+}
+#endif
 
 //DEBUG DEFINES:
 #define DEBUG 1              //Global debug define enable
