@@ -12,7 +12,7 @@ Firmware for the Twomes Boiler Monitor Module.
 * [Credits](#credits)
 
 ## General info
-This firmware is designed to run on the ESP32 of the [Twomes Temperature Monitor hardware](https://github.com/energietransitie/twomes-temp-monitor-hardware), in combination with two DS18b20(Z) temperature sensors in clamps that can be connected the supply water piple (from the boiler to the hydronic radiators) and return water pipes returning from the hydronic radiators to the boiler. We do not expect the end user of the device to be able to distinguish between supply and return water pipes and leave the determination of supply and return to the analysis phase of the data.
+This firmware is designed to run on the ESP32 of the [Twomes Temperature Monitor hardware](https://github.com/energietransitie/twomes-temp-monitor-hardware), in combination with two [DS18b20(Z)](https://www.maximintegrated.com/en/products/sensors/DS18B20.html) temperature sensors in clamps that can be connected the supply water piple (from the boiler to the hydronic radiators) and return water pipes returning from the hydronic radiators to the boiler. We do not expect the end user of the device to be able to distinguish between supply and return water pipes and leave the determination of supply and return to the analysis phase of the data.
 
 The ESP32 reads the temperatures from both sensors and stores them in [RTC fast memory](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#rtc-fast-memory), to preserve them during the deep sleep interval between brief moments when the ESP32 needs to be awake for data acquisition. After a series of 20 measurements at fixed time intervals, the ESP32 will send the series of measurements to the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using the ESP-NOW protocol.
 
@@ -41,7 +41,6 @@ To deploy the firmware, in addition to the [generic prerequisites for deploying 
 * Follow the [generic Twomes firmware upload instructions ](https://github.com/energietransitie/twomes-generic-esp-firmware#device-preparation-step-1a-uploading-firmware-to-esp32), with the exceptions mentioned below:
 	* When you see the beginning of the sequence `Connecting ......_____......`, press and hold the button labeled `GPIO0 (SW2)` on the PCB, then briefly press the button labeled `RESET (SW1)`. 
 	* You should see an indication that the firmware is being written to the device.
-	* When the upload is finished, view the serial output with a serial monitor tool like PuTTY or the utility of your IDE (115200 baud). Press reset and make sure the firmware boots.
  	* When the upload is finished, view the serial output with a serial monitor tool like [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) or the utility of your IDE (115200 baud). Press `RESET (SW1)` shortly to  make sure the firmware boots. 
 	* Remove the battery or insert a battery insulating pull tab when you do not plan to use the boiler monitor module immediately, to prevent unnecessary battery drain. In particular, when the temperature sensors are not connected, power consumption is higher. 
 
@@ -62,7 +61,7 @@ Ready:
 * Send measurement data to [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using ESP-NOW
 
 To-do:
-* Implement more error indicators using LEDs
+* Align indication of status and error via LEDs with other measurement devices.
 
 ## Status
 Project is: in Progress.
