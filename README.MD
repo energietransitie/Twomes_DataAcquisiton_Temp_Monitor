@@ -17,10 +17,10 @@ This firmware is designed to run on the ESP32 of the [Twomes Temperature Monitor
 The ESP32 reads the temperatures from both sensors and stores them in [RTC fast memory](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/memory-types.html#rtc-fast-memory), to preserve them during the deep sleep interval between brief moments when the ESP32 needs to be awake for data acquisition. After a series of 20 measurements at fixed time intervals, the ESP32 will send the series of measurements to the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware) using the ESP-NOW protocol.
 
 Via the [Twomes P1 Gateway measurement device](https://github.com/energietransitie/twomes-p1-gateway-firmware), the Twomes Boiler Monitor Module sends the following properties to the Twomes server:
-| Sensor  | Property           | Unit | Data type  | Format | Interval [h:mm:ss]| Description                                |
-|---------|--------------------|------|------------|--------|-------------------|--------------------------------------------|
-| DS18b20 | `boilerTemp1`      | °C   | float      | f.1    | 0:00:10           | temperature of hydronic supply/return pipe |
-| DS18b20 | `boilerTemp2`      | °C   | float      | f.1    | 0:00:10           | temperature of hydronic supply/return pipe |
+| Sensor  | Property           | Unit | [Printf format](https://en.wikipedia.org/wiki/Printf_format_string) | Measurement interval \[h:mm:ss\] | Description                                |
+|---------|--------------------|------|---------|-------------------|--------------------------------------------|
+| DS18b20 | `boilerTemp1`      | °C   | %.1f    | 0:00:10           | temperature of hydronic supply/return pipe |
+| DS18b20 | `boilerTemp2`      | °C   | %.1f    | 0:00:10           | temperature of hydronic supply/return pipe |
 
 
 
@@ -80,7 +80,7 @@ This software is a collaborative effort of:
 Product owner:
 * Marco Winkelman · [@MarcoW71](https://github.com/MarcoW71)
 
-We use and gratefully aknowlegde the efforts of the makers of the following source code and libraries:
+We use and gratefully acknowlegde the efforts of the makers of the following source code and libraries:
 
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32), by Espressif, licensed under [GNU LGPL-2.1](https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md)
 * [Library for Dallas/Maxim 1-Wire Chips](https://github.com/PaulStoffregen/OneWire), by Paul Stoffregen and others, licensed under [various licernses](https://github.com/PaulStoffregen/OneWire)
